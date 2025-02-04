@@ -1,1 +1,11 @@
-Qwen2.5-0.5B
+
+# Model contents (Available on Qwen HuggingFace or GitHub)
+Qwen2.5-0.5B/
+
+
+# Build artifacts
+build/
+
+# Executables
+test
+inference
