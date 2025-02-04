@@ -18,6 +18,18 @@ typedef struct {
 } Matrix;
 
 
+
+/* =========================== BFLOAT FUNCTIONS ============================ */
+
+
+/*
+ * Creates a new bfloat16 value from a float
+ */
+bfloat16 new_bf16(float in);
+
+
+/* =========================== MATRIX FUNCTIONS ============================ */
+
 /*
  * Creates a new uninitialized `Matrix` object of the given dimensions
  */

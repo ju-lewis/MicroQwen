@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <assert.h>
 #include <stdio.h>
+#include <string.h>
 
 
 #include "linalg.h"
@@ -10,6 +11,15 @@
 
 /* =========================== BFLOAT FUNCTIONS ============================ */
 
+bfloat16 new_bf16(float in) {
+    bfloat16 x;
+    memcpy(
+        &x,                         // Copy memory into the new bfloat16
+        (float *)(((long)&in) + 2), // Convert pointer to a `long` to allow shifting address to the sign and exponent
+        sizeof(bfloat16)            // Copy 2 bytes
+    ); 
+    return x;
+}
 
 
 
