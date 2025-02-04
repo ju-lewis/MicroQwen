@@ -27,6 +27,16 @@ typedef struct {
  */
 bfloat16 new_bf16(float in);
 
+/*
+ * Converts a bfloat16 value to a float
+ */
+float bf16_to_float(bfloat16 in);
+
+/*
+ * Adds 2 bfloat16 values
+ */
+bfloat16 add_bf16(bfloat16 x, bfloat16 y);
+
 
 /* =========================== MATRIX FUNCTIONS ============================ */
 
