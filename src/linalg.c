@@ -88,5 +88,31 @@ void print_matrix(Matrix *m) {
 }
 
 
+Matrix naive_matmul(Matrix *a, Matrix *b) {
+    assert(a->n_cols == b->n_rows);
+
+    Matrix c = new_matrix(a->n_rows, b->n_cols);
+
+    for (unsigned int i=0; i < a->n_rows; i++) {
+        for(unsigned int j=0; j < b->n_cols; j++) {
+
+            bfloat16 curr = 0;
+
+            // Iterate through the relevant vector
+            for (unsigned int k=0; k < a->n_cols; k++) {
+                bfloat16 prod = mul_bf16(a->vals[i][k], b->vals[k][j]);
+                curr = add_bf16(curr, prod);
+            }
+
+            c.vals[i][j] = curr;
+        }
+    }
+
+    return c;
+}
+
+
+
+
 
 

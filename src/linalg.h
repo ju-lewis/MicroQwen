@@ -46,7 +46,8 @@ Matrix new_matrix(unsigned int n_rows, unsigned int n_cols);
 /* Pretty-prints a `Matrix` to stdout */
 void print_matrix(Matrix *m);
 
-
+/* Naive (by-hand method) matrix multiplication - just for simple debugging */
+Matrix naive_matmul(Matrix *a, Matrix *b);
 
 #define LINALG_H
 #endif
