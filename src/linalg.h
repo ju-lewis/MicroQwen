@@ -22,34 +22,30 @@ typedef struct {
 /* =========================== BFLOAT FUNCTIONS ============================ */
 
 
-/*
- * Creates a new bfloat16 value from a float
- */
+/* Creates a new bfloat16 value from a float */
 bfloat16 new_bf16(float in);
 
-/*
- * Converts a bfloat16 value to a float
- */
+/* Converts a bfloat16 value to a float */
 float bf16_to_float(bfloat16 in);
 
-/*
- * Adds 2 bfloat16 values
- */
+/* Adds 2 bfloat16 values */
 bfloat16 add_bf16(bfloat16 x, bfloat16 y);
+
+/* Multiplies 2 bfloat16 values */
+bfloat16 mul_bf16(bfloat16 x, bfloat16 y);
+
+/* Divides 2 bfloat16 values */
+bfloat16 div_bf16(bfloat16 x, bfloat16 y);
 
 
 /* =========================== MATRIX FUNCTIONS ============================ */
 
-/*
- * Creates a new uninitialized `Matrix` object of the given dimensions
- */
+/* Creates a new uninitialized `Matrix` object of the given dimensions */
 Matrix new_matrix(unsigned int n_rows, unsigned int n_cols);
 
-
-/*
- * Pretty-prints a `Matrix` to stdout
- */
+/* Pretty-prints a `Matrix` to stdout */
 void print_matrix(Matrix *m);
+
 
 
 #define LINALG_H

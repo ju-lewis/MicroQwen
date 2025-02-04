@@ -17,7 +17,7 @@ bfloat16 new_bf16(float in) {
     memcpy(
         &x,                         // Copy memory into the new bfloat16
         (float *)(((long)&in) + s), // Convert pointer to a `long` to allow shifting address to the sign and exponent
-        s            // Copy 2 bytes
+        s                           // Copy 2 bytes
     ); 
     return x;
 }
@@ -31,7 +31,6 @@ float bf16_to_float(bfloat16 in) {
         &in, 
         s
     );
-
     return f;
 }
 
@@ -40,6 +39,20 @@ bfloat16 add_bf16(bfloat16 x, bfloat16 y) {
     float fx = bf16_to_float(x);
     float fy = bf16_to_float(y);
     return new_bf16(fx + fy);
+}
+
+
+bfloat16 mul_bf16(bfloat16 x, bfloat16 y) {
+    float fx = bf16_to_float(x);
+    float fy = bf16_to_float(y);
+    return new_bf16(fx * fy);
+}
+
+
+bfloat16 div_bf16(bfloat16 x, bfloat16 y) {
+    float fx = bf16_to_float(x);
+    float fy = bf16_to_float(y);
+    return new_bf16(fx / fy);
 }
 
 
@@ -65,11 +78,10 @@ Matrix new_matrix(unsigned int n_rows, unsigned int n_cols) {
 }
 
 
-
 void print_matrix(Matrix *m) {
     for (unsigned int i=0; i<m->n_rows; i++) {
         for (unsigned int j=0; j<m->n_cols; j++) {
-            printf("%f ", (float)m->vals[i][j]);
+            printf("%f ", bf16_to_float(m->vals[i][j]));
         }
         putchar('\n');
     }
