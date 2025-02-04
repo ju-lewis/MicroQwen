@@ -4,8 +4,9 @@ Qwen2.5-0.5B/
 
 
 # Build artifacts
-build/
+build/*
 
 # Executables
-test
-inference
+./test
+./inference
+

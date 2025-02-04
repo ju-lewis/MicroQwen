@@ -1,7 +1,7 @@
 
 build := build
 src   := src
-flags := -Wall -Werror -Wpedantic -Wextra
+flags := -Wall -Wconversion -Wpedantic -Wextra
 
 
 inference:
