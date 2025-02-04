@@ -112,7 +112,10 @@ Matrix naive_matmul(Matrix *a, Matrix *b) {
 }
 
 
-
+void free_matrix(Matrix *m) {
+    free(m->vals);
+    m->vals = NULL;
+}
 
 
 

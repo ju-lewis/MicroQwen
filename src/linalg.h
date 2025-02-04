@@ -49,5 +49,8 @@ void print_matrix(Matrix *m);
 /* Naive (by-hand method) matrix multiplication - just for simple debugging */
 Matrix naive_matmul(Matrix *a, Matrix *b);
 
+/* Frees the heap-allocated values in a `Matrix` */
+void free_matrix(Matrix *m);
+
 #define LINALG_H
 #endif
