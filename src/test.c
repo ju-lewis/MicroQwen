@@ -13,6 +13,7 @@ int main() {
     String header = read_header(s);
 
     
+    printf(header.chars);
 
 
     free_string(&s);

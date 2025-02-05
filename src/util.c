@@ -22,6 +22,15 @@ String string_from_chars(char *chars) {
     return str;
 }
 
+String alloc_empty_string(size_t buf_size) {
+    String str;
+
+    str.chars = (char *)malloc(sizeof(char) * buf_size); 
+    str.buf_size = buf_size;
+    str.len = 0;
+
+    return str;
+}
 
 void free_string(String *str) {
     free(str->chars);

@@ -16,7 +16,12 @@ typedef struct {
 } String;
 
 
+/* Creates a `String` object from a character array */
 String string_from_chars(char *chars);
+
+/* Creates and empty string with a pre-allocated buffer */
+String alloc_empty_string(size_t buf_size);
+
 
 void free_string(String *str);
 
