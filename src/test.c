@@ -8,15 +8,17 @@
 
 int main() {
 
-    String s = string_from_chars("./Qwen2.5-0.5B/model.safetensors");
+    // Load embedding matrix 
+    FILE *fp = fopen("./Qwen2.5-0.5B/model.safetensors", "r");
+
+    long base_offset = 32288;
     
-    String header = read_header(s);
+    Matrix m = read_binary_matrix(fp, base_offset, 151936, 896);
+    fclose(fp);
 
     
-    printf(header.chars);
 
-
-    free_string(&s);
-    free_string(&header);
+    print_matrix(&m);
+    free_matrix(&m);
 }
 

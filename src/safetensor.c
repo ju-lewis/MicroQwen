@@ -5,6 +5,7 @@
 #include <assert.h>
 
 #include "safetensor.h"
+#include "linalg.h"
 
 
 
@@ -26,4 +27,19 @@ String read_header(String filename) {
     fclose(fp);
 
     return header;
+}
+
+
+Matrix read_binary_matrix(FILE *fp, long offset, unsigned int rows, unsigned int cols) {
+    
+    Matrix m = new_matrix(rows, cols);
+    
+    fseek(fp, offset, SEEK_SET);
+
+    for (unsigned int i=0; i < rows; i++) {
+        fread(m.vals[i], sizeof(bfloat16), cols, fp);
+    }
+
+
+    return m;
 }
