@@ -11,3 +11,6 @@ test
 ./test
 ./inference
 
+
+# MacOS Debug symbols
+*.dSYM

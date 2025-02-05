@@ -1,7 +1,7 @@
 
 from transformers import PreTrainedTokenizerFast
 
-fast_tokenizer = PreTrainedTokenizerFast(tokenizer_file="./Qwen2.5-0.5B/tokenizer.json")
+fast_tokenizer = PreTrainedTokenizerFast(tokenizer_file="../Qwen2.5-0.5B/tokenizer.json")
 
 
 string = input()

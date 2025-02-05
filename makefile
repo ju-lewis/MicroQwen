@@ -1,7 +1,7 @@
 
 build := build
 src   := src
-flags := -Wall -Wconversion -Wpedantic -Wextra -g -std=c23
+flags := -Wall -Wconversion -Wpedantic -Wextra -g -std=c2x
 
 
 #inference:
