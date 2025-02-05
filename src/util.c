@@ -1,8 +1,9 @@
 
-#include "util.h"
 #include <string.h>
 #include <stdlib.h>
 #include <assert.h>
+
+#include "util.h"
 
 
 String string_from_chars(char *chars) {
@@ -14,8 +15,8 @@ String string_from_chars(char *chars) {
 
     assert(str.chars);
 
-    strlcpy(str.chars, chars, num_chars);
     str.buf_size = num_chars + 1;
+    strncpy(str.chars, chars, str.buf_size);
     str.len = num_chars;
     
     return str;

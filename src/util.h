@@ -7,6 +7,8 @@
 #ifndef UTIL_H
 #define UTIL_H
 
+#include <stddef.h>
+
 typedef struct {
     char *chars;
     size_t  len;

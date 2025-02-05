@@ -4,14 +4,22 @@ src   := src
 flags := -Wall -Wconversion -Wpedantic -Wextra -g -std=c23
 
 
-inference:
+#inference:
 	
 
-test: linalg.o
-	gcc ${flags} ${src}/test.c ${build}/linalg.o -o test
+test: linalg.o safetensor.o util.o
+	gcc ${flags} ${src}/test.c ${build}/linalg.o ${build}/safetensor.o ${build}/util.o -o test
 
 linalg.o:
 	gcc ${flags} -c ${src}/linalg.c -o ${build}/linalg.o
+
+
+safetensor.o: util.o
+	gcc ${flags} -c ${src}/safetensor.c -o ${build}/safetensor.o
+
+
+util.o:
+	gcc ${flags} -c ${src}/util.c -o ${build}/util.o
 
 
 clean:

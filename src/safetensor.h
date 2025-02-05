@@ -10,6 +10,9 @@
 #include "util.h"
 
 
+#define HEADER_METADATA_SIZE 8
+
+
 String read_header(String filename);
 
 
