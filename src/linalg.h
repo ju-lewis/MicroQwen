@@ -8,6 +8,9 @@
 #include <stdint.h>
 
 
+#define MAX(x,y) x > y ? x : y
+
+
 typedef uint16_t bfloat16;
 
 
@@ -16,7 +19,6 @@ typedef struct {
                  n_cols;
     bfloat16 **vals;
 } Matrix;
-
 
 
 /* =========================== BFLOAT FUNCTIONS ============================ */
@@ -39,6 +41,7 @@ bfloat16 div_bf16(bfloat16 x, bfloat16 y);
 
 
 /* =========================== MATRIX FUNCTIONS ============================ */
+void power_2_pad_matrix(Matrix *m);
 
 /* Creates a new uninitialized `Matrix` object of the given dimensions */
 Matrix new_matrix(unsigned int n_rows, unsigned int n_cols);
@@ -48,6 +51,9 @@ void print_matrix(Matrix *m);
 
 /* Naive (by-hand method) matrix multiplication - just for simple debugging */
 Matrix naive_matmul(Matrix *a, Matrix *b);
+
+/* Strassen (1969)'s matrix multiplication method */
+Matrix strassen_matmul(Matrix *a, Matrix *b);
 
 /* Frees the heap-allocated values in a `Matrix` */
 void free_matrix(Matrix *m);

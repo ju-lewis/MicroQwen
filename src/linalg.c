@@ -3,10 +3,14 @@
 #include <assert.h>
 #include <stdio.h>
 #include <string.h>
+#include <math.h>
 
 
 #include "linalg.h"
 
+// Internal function declarations
+Matrix *recursive_strassen(Matrix *a, Matrix *b);
+unsigned int next_largest_2_power(unsigned int n);
 
 
 /* =========================== BFLOAT FUNCTIONS ============================ */
@@ -109,6 +113,34 @@ Matrix naive_matmul(Matrix *a, Matrix *b) {
     }
 
     return c;
+}
+
+
+//Matrix strassen_matmul(Matrix *a, Matrix *b) {
+//    assert(a->n_cols == b->n_rows);
+//    
+//    
+//
+//}
+//
+void power_2_pad_matrix(Matrix *m) {
+    unsigned int largest_dimension = MAX(m->n_rows, m->n_cols);
+    
+    unsigned int target_size = next_largest_2_power(largest_dimension);
+
+    printf("Target size: %dx%d\n", target_size, target_size);
+    
+}
+
+
+
+unsigned int next_largest_2_power(unsigned int n) {
+    // Check if already a power of 2
+    if ((n & (n-1)) == 0) {
+        return n;
+    }
+    return 2 << (int)log2(n);
+
 }
 
 

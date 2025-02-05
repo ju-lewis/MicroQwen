@@ -9,7 +9,7 @@
 
 
 
-
+/* Reads a safetensor file header */
 String read_header(String filename) {
     FILE *fp = fopen(filename.chars, "r");
     assert(fp);
@@ -29,7 +29,7 @@ String read_header(String filename) {
     return header;
 }
 
-
+/* Reads the binary data for a bfloat16 matrix from a safetensor file into a `Matrix` object */
 Matrix read_binary_matrix(FILE *fp, long offset, unsigned int rows, unsigned int cols) {
     
     Matrix m = new_matrix(rows, cols);
@@ -43,3 +43,7 @@ Matrix read_binary_matrix(FILE *fp, long offset, unsigned int rows, unsigned int
 
     return m;
 }
+
+
+
+

@@ -15,10 +15,12 @@
 
 #define HEADER_METADATA_SIZE 8
 
-
+/* Reads a safetensor file header */
 String read_header(String filename);
 
+/* Reads the binary data for a bfloat16 matrix from a safetensor file into a `Matrix` object */
 Matrix read_binary_matrix(FILE *fp, long offset, unsigned int rows, unsigned int cols);
+
 
 
 #endif

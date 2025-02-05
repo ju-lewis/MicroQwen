@@ -16,9 +16,11 @@ int main() {
     Matrix m = read_binary_matrix(fp, base_offset, 151936, 896);
     fclose(fp);
 
-    
+    // Test padding a large row vector
+    power_2_pad_matrix(&m);
 
-    print_matrix(&m);
+
+
     free_matrix(&m);
 }
 
