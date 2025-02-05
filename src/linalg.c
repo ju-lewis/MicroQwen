@@ -130,6 +130,16 @@ void power_2_pad_matrix(Matrix *m) {
 
     printf("Target size: %dx%d\n", target_size, target_size);
     
+    
+    // Re-allocate rows
+    if (m->n_rows < target_size) {
+
+    }
+
+    // Re-allocate columns
+    if (m->n_cols < target_size) {
+        
+    }
 }
 
 
