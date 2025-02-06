@@ -130,15 +130,29 @@ void power_2_pad_matrix(Matrix *m) {
 
     printf("Target size: %dx%d\n", target_size, target_size);
     
-    
+    unsigned int original_num_rows = m->n_rows;
+
     // Re-allocate rows
     if (m->n_rows < target_size) {
-
+        m->vals = realloc(m->vals, target_size * sizeof(bfloat16 *));
+        assert(m->vals);
+        m->n_rows = target_size;
     }
 
     // Re-allocate columns
     if (m->n_cols < target_size) {
-        
+        for(unsigned int i=0; i<m->n_rows; i++) {
+            m->vals[i] = realloc(m->vals[i], target_size * sizeof(bfloat16));
+            assert(m->vals[i]);
+
+            if (i < original_num_rows) {
+                // Memset the rest of the row with 0
+                memset(&m->vals[i][m->n_cols], 0, sizeof(bfloat16) * (target_size - m->n_cols));
+            } else {
+                memset(m->vals[i], 0, sizeof(bfloat16) * target_size);
+            }
+        }
+        m->n_cols = target_size;
     }
 }
 
