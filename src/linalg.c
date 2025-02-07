@@ -170,6 +170,22 @@ Matrix one_hot_encoding(unsigned int dim, unsigned int idx) {
 //
 //}
 //
+
+
+/* Computes the length of a row vector */
+bfloat16 vector_magnitude(Matrix *vec) {
+    assert(vec->n_rows = 1);
+    
+    bfloat16 sum = 0;
+    for (unsigned int i=0; i<vec->n_cols; i++) {
+        sum = add_bf16(sum, mul_bf16(vec->vals[0][i], vec->vals[0][i]));
+    }
+
+    // ewwwwwww
+    return new_bf16((float)sqrt(bf16_to_float(sum)));
+}
+
+
 void pad_matrix(Matrix *m) {
     unsigned int target_size = MAX(m->n_rows, m->n_cols);
     

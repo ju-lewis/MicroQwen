@@ -66,6 +66,9 @@ Matrix naive_matmul(Matrix *a, Matrix *b);
 /* Strassen (1969)'s matrix multiplication method */
 Matrix strassen_matmul(Matrix *a, Matrix *b);
 
+/* Computes the length of a row vector */
+bfloat16 vector_magnitude(Matrix *vec);
+
 
 /* Frees the heap-allocated values in a `Matrix` */
 void free_matrix(Matrix *m);
