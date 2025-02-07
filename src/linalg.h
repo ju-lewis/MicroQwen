@@ -41,7 +41,9 @@ bfloat16 div_bf16(bfloat16 x, bfloat16 y);
 
 
 /* =========================== MATRIX FUNCTIONS ============================ */
-void power_2_pad_matrix(Matrix *m);
+
+
+void pad_matrix(Matrix *m);
 
 /* Creates a new uninitialized `Matrix` object of the given dimensions */
 Matrix new_matrix(unsigned int n_rows, unsigned int n_cols);

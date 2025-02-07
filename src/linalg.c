@@ -10,7 +10,6 @@
 
 // Internal function declarations
 Matrix *recursive_strassen(Matrix *a, Matrix *b);
-unsigned int next_largest_2_power(unsigned int n);
 
 
 /* =========================== BFLOAT FUNCTIONS ============================ */
@@ -68,7 +67,7 @@ Matrix new_matrix(unsigned int n_rows, unsigned int n_cols) {
     assert(vals);
 
     for (unsigned int i=0; i<n_rows; i++) {
-        vals[i] = (bfloat16 *)malloc(sizeof(bfloat16) * n_cols);
+        vals[i] = (bfloat16 *)calloc(n_cols, sizeof(bfloat16));
         assert(vals[i]);
     }
 
@@ -98,17 +97,13 @@ Matrix naive_matmul(Matrix *a, Matrix *b) {
     Matrix c = new_matrix(a->n_rows, b->n_cols);
 
     for (unsigned int i=0; i < a->n_rows; i++) {
-        for(unsigned int j=0; j < b->n_cols; j++) {
-
-            bfloat16 curr = 0;
+        for (unsigned int k=0; k < a->n_cols; k++) {
 
             // Iterate through the relevant vector
-            for (unsigned int k=0; k < a->n_cols; k++) {
+            for(unsigned int j=0; j < b->n_cols; j++) {
                 bfloat16 prod = mul_bf16(a->vals[i][k], b->vals[k][j]);
-                curr = add_bf16(curr, prod);
+                c.vals[i][j] = add_bf16(c.vals[i][j], prod);
             }
-
-            c.vals[i][j] = curr;
         }
     }
 
@@ -123,13 +118,10 @@ Matrix naive_matmul(Matrix *a, Matrix *b) {
 //
 //}
 //
-void power_2_pad_matrix(Matrix *m) {
-    unsigned int largest_dimension = MAX(m->n_rows, m->n_cols);
+void pad_matrix(Matrix *m) {
+    unsigned int target_size = MAX(m->n_rows, m->n_cols);
     
-    unsigned int target_size = next_largest_2_power(largest_dimension);
 
-    printf("Target size: %dx%d\n", target_size, target_size);
-    
     unsigned int original_num_rows = m->n_rows;
 
     // Re-allocate rows
@@ -154,16 +146,6 @@ void power_2_pad_matrix(Matrix *m) {
     m->n_cols = target_size;
 }
 
-
-
-unsigned int next_largest_2_power(unsigned int n) {
-    // Check if already a power of 2
-    if ((n & (n-1)) == 0) {
-        return n;
-    }
-    return 2 << (int)log2(n);
-
-}
 
 
 void free_matrix(Matrix *m) {
