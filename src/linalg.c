@@ -38,20 +38,26 @@ float bf16_to_float(bfloat16 in) {
 }
 
 
+/* Adds 2 bfloat16 values */
 bfloat16 add_bf16(bfloat16 x, bfloat16 y) {
     float fx = bf16_to_float(x);
     float fy = bf16_to_float(y);
     return new_bf16(fx + fy);
 }
 
+/* Negates (changes the sign of) a bf16 */
+bfloat16 negate_bf16(bfloat16 x) {
+    return x ^= (1 << 15);
+}
 
+/* Multiplies 2 bfloat16 values */
 bfloat16 mul_bf16(bfloat16 x, bfloat16 y) {
     float fx = bf16_to_float(x);
     float fy = bf16_to_float(y);
     return new_bf16(fx * fy);
 }
 
-
+/* Divides 2 bfloat16 values */
 bfloat16 div_bf16(bfloat16 x, bfloat16 y) {
     float fx = bf16_to_float(x);
     float fy = bf16_to_float(y);
@@ -88,6 +94,36 @@ void print_matrix(Matrix *m) {
         }
         putchar('\n');
     }
+}
+
+/* Perform simple addition on 2 matrices */
+Matrix add_matrix(Matrix *a, Matrix *b) {
+    assert(a->n_rows == b->n_rows);
+    assert(a->n_cols == b->n_cols);
+
+    Matrix c = new_matrix(a->n_rows, a->n_cols);
+
+    for (unsigned int i=0; i < a->n_rows; i++) {
+        for (unsigned int j=0; j < a->n_cols; j++) {
+            c.vals[i][j] = add_bf16(a->vals[i][j], b->vals[i][j]);
+        }
+    }
+    return c;
+}
+
+/* Perform simple subtraction on 2 matrices */
+Matrix subtract_matrix(Matrix *a, Matrix *b) {
+    assert(a->n_rows == b->n_rows);
+    assert(a->n_cols == b->n_cols);
+
+    Matrix c = new_matrix(a->n_rows, a->n_cols);
+
+    for (unsigned int i=0; i < a->n_rows; i++) {
+        for (unsigned int j=0; j < a->n_cols; j++) {
+            c.vals[i][j] = add_bf16(a->vals[i][j], negate_bf16(b->vals[i][j]));
+        }
+    }
+    return c;
 }
 
 

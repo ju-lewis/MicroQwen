@@ -33,6 +33,9 @@ float bf16_to_float(bfloat16 in);
 /* Adds 2 bfloat16 values */
 bfloat16 add_bf16(bfloat16 x, bfloat16 y);
 
+/* Negates (changes the sign of) a bf16 */
+bfloat16 negate_bf16(bfloat16 x);
+
 /* Multiplies 2 bfloat16 values */
 bfloat16 mul_bf16(bfloat16 x, bfloat16 y);
 
@@ -51,11 +54,18 @@ Matrix new_matrix(unsigned int n_rows, unsigned int n_cols);
 /* Pretty-prints a `Matrix` to stdout */
 void print_matrix(Matrix *m);
 
+/* Perform simple addition on 2 matrices */
+Matrix add_matrix(Matrix *a, Matrix *b);
+
+/* Perform simple subtraction on 2 matrices */
+Matrix subtract_matrix(Matrix *a, Matrix *b);
+
 /* Naive (by-hand method) matrix multiplication - just for simple debugging */
 Matrix naive_matmul(Matrix *a, Matrix *b);
 
 /* Strassen (1969)'s matrix multiplication method */
 Matrix strassen_matmul(Matrix *a, Matrix *b);
+
 
 /* Frees the heap-allocated values in a `Matrix` */
 void free_matrix(Matrix *m);
