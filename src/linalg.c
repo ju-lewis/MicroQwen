@@ -110,6 +110,22 @@ Matrix naive_matmul(Matrix *a, Matrix *b) {
     return c;
 }
 
+/* Prints the shape of a matrix to stdout */
+void print_matrix_shape(Matrix *m) {
+    printf("%dx%d\n", m->n_rows, m->n_cols);
+}
+
+
+/* Creates a one-hot encoding vector given a scalar quantity */
+Matrix one_hot_encoding(unsigned int dim, unsigned int idx) {
+    Matrix m = new_matrix(1, dim);
+
+    m.vals[0][idx] = new_bf16(1);
+
+    return m;
+}
+
+
 
 //Matrix strassen_matmul(Matrix *a, Matrix *b) {
 //    assert(a->n_cols == b->n_rows);

@@ -6,14 +6,18 @@
 #define NN_H
 
 #include <stddef.h>
-
 #include "linalg.h"
 
 
-typedef struct {
+#define QWEN25_VOCAB_SIZE 151936
+
+
+struct FFLayer {
     Matrix weights;
-    Matrix (*activation_fn)(FFLayer *layer)
-} FFLayer;
+    Matrix (*activation_fn)(struct FFLayer *layer);
+};
+
+typedef struct FFLayer FFLayer;
 
 
 typedef struct {

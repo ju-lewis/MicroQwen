@@ -60,5 +60,12 @@ Matrix strassen_matmul(Matrix *a, Matrix *b);
 /* Frees the heap-allocated values in a `Matrix` */
 void free_matrix(Matrix *m);
 
+/* Prints the shape of a matrix to stdout */
+void print_matrix_shape(Matrix *m);
+
+/* Creates a one-hot encoding vector given a scalar quantity */
+Matrix one_hot_encoding(unsigned int dim, unsigned int idx);
+
+
 #define LINALG_H
 #endif

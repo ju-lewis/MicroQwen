@@ -2,6 +2,7 @@
 #include "linalg.h"
 #include "safetensor.h"
 #include "util.h"
+#include "nn.h"
 
 #include <stdio.h>
 
@@ -13,21 +14,22 @@ int main() {
 
     long base_offset = 32288;
     
-    Matrix m = read_binary_matrix(fp, base_offset, 151936, 896);
+    Matrix m = read_binary_matrix(fp, base_offset, QWEN25_VOCAB_SIZE, 896);
     fclose(fp);
 
-    printf("Read matrix\n");
 
-    Matrix vec = new_matrix(1, 151936);
+    Matrix vec = one_hot_encoding(QWEN25_VOCAB_SIZE, 2159); // 2159 is the token ID for button
 
-    printf("Created vector\n");
 
-    naive_matmul(&vec, &m);
+    Matrix embed = naive_matmul(&vec, &m);
 
-    printf("Finished matmul\n");
+    print_matrix_shape(&embed);
+    print_matrix(&embed);
+
 
 
     free_matrix(&m);
     free_matrix(&vec);
+    free_matrix(&embed);
 }
 
