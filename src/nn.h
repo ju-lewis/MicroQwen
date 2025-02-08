@@ -29,8 +29,11 @@ typedef struct {
 /* Creates an empty feed forward neural network */
 FFModel init_ff_model();
 
-/* Adds a layer to a feed-forward neural network */
-void add_ff_layer(FFModel *model);
+/* Adds a layer to a feed-forward neural network. */
+void add_ff_layer(FFModel *model, Matrix *weights, Matrix (*activation_fn)(FFLayer *layer));
+
+/* Frees a feed-forward neural network */
+void free_ff_model(FFModel *model);
 
 
 
