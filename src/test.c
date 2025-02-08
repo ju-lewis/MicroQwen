@@ -17,8 +17,12 @@ int main() {
     //Matrix m = read_binary_matrix(fp, base_offset, QWEN25_VOCAB_SIZE, 896);
     //fclose(fp);
 
+
+    Matrix weights = new_matrix(2, 3);
+
+
     FFModel m = init_ff_model();
-    add_ff_layer(&m, NULL, NULL);
+    add_ff_layer(&m, &weights, NULL);
     
 
     free_ff_model(&m);

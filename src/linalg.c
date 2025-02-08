@@ -217,8 +217,10 @@ void pad_matrix(Matrix *m) {
 
 
 void free_matrix(Matrix *m) {
+    for (unsigned int i=0; i<m->n_rows; i++) {
+        free(m->vals[i]);
+    }
     free(m->vals);
-    m->vals = NULL;
 }
 
 
