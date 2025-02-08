@@ -11,4 +11,9 @@ FFModel init_ff_model() {
 }
 
 
+void add_ff_layer(FFModel *model) {
+    model->layers = (FFLayer *)realloc(model->layers, ++model->num_layers * sizeof(FFLayer));
+}
+
+
 
