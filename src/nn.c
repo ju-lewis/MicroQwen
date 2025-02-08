@@ -1,5 +1,6 @@
 
 #include <stdlib.h>
+#include <assert.h>
 
 #include "nn.h"
 
@@ -18,6 +19,13 @@ FFModel init_ff_model() {
 
 
 void add_ff_layer(FFModel *model, Matrix *weights, Matrix (*activation_fn)(FFLayer *layer) ) {
+
+    assert(weights != NULL);
+    
+    // Ensure the weights matrix is a correct size given the previous layer
+    if (model->num_layers > 0) {
+        assert(model->layers[model->num_layers - 1].weights.n_cols == weights->n_rows);
+    }
 
     FFLayer new_layer = {
         .weights = *weights,
@@ -38,6 +46,8 @@ void free_ff_model(FFModel *model) {
 
     free(model->layers);
 
-
 }
+
+
+
 
