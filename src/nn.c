@@ -18,7 +18,7 @@ FFModel init_ff_model() {
 }
 
 
-void add_ff_layer(FFModel *model, Matrix *weights, Matrix (*activation_fn)(FFLayer *layer) ) {
+void add_ff_layer(FFModel *model, Matrix *weights, void (*activation_fn)(Matrix *pre_activation)) {
 
     assert(weights != NULL);
     
@@ -60,9 +60,27 @@ Matrix ff_predict(FFModel *model, Matrix *input) {
     
     // I'm going to start with a simple naive implementation that just creates and 
     // frees matrices for each layers' predictions.
+
+    Matrix layer_inputs = *input;
+    Matrix layer_outputs;
     
     for(size_t i=0; i<model->num_layers; i++) {
+        layer_outputs = naive_matmul(&layer_inputs, &model->layers[i].weights);
+
+        // Free previous inputs (as long as they weren't provided by the caller)
+        // We can tell this if the underlying weight pointers are the same
+        if (layer_inputs.vals != input->vals) {
+            free_matrix(&layer_inputs);
+        }
+
+        // Modify the outputs in-place to apply the activation function
+        model->layers[i].activation_fn(&layer_outputs);
+        
+        layer_inputs = layer_outputs;
     }
+
+    
+    return layer_outputs;
 
 }
 

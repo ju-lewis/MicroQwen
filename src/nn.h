@@ -12,12 +12,10 @@
 #define QWEN25_VOCAB_SIZE 151936
 
 
-struct FFLayer {
+typedef struct {
     Matrix weights;
-    Matrix (*activation_fn)(struct FFLayer *layer);
-};
-
-typedef struct FFLayer FFLayer;
+    void (*activation_fn)(Matrix *pre_activation);
+} FFLayer;
 
 
 typedef struct {
@@ -30,7 +28,7 @@ typedef struct {
 FFModel init_ff_model();
 
 /* Adds a layer to a feed-forward neural network. */
-void add_ff_layer(FFModel *model, Matrix *weights, Matrix (*activation_fn)(FFLayer *layer));
+void add_ff_layer(FFModel *model, Matrix *weights, void (*activation_fn)(Matrix *pre_activation));
 
 /* Frees a feed-forward neural network */
 void free_ff_model(FFModel *model);
