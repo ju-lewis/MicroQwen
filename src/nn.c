@@ -48,6 +48,25 @@ void free_ff_model(FFModel *model) {
 
 }
 
+/* Runs a full feed-forward prediction through a model */
+Matrix ff_predict(FFModel *model, Matrix *input) {
+
+    // Ensure the input is a row vector with the correct number of columns
+    assert(
+        model->num_layers > 0 && 
+        input->n_rows == 1    && 
+        model->layers[0].weights.n_rows == input->n_cols
+    );
+    
+    // I'm going to start with a simple naive implementation that just creates and 
+    // frees matrices for each layers' predictions.
+    
+    for(size_t i=0; i<model->num_layers; i++) {
+    }
+
+}
+
+
 
 
 

@@ -1,10 +1,11 @@
 
+#include <stdio.h>
+
 #include "linalg.h"
 #include "safetensor.h"
 #include "util.h"
 #include "nn.h"
 
-#include <stdio.h>
 
 
 int main() {

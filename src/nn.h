@@ -35,6 +35,9 @@ void add_ff_layer(FFModel *model, Matrix *weights, Matrix (*activation_fn)(FFLay
 /* Frees a feed-forward neural network */
 void free_ff_model(FFModel *model);
 
+/* Runs a full feed-forward prediction through a model */
+Matrix ff_predict(FFModel *model, Matrix *input);
+
 
 
 #endif
