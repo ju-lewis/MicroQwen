@@ -113,15 +113,31 @@ Matrix scaled_dp_attention(Matrix *q, Matrix *k, Matrix *v) {
 }
 
 
-Matrix grouped_query_attention(Matrix *x, Matrix *q_proj, Matrix *k_proj, Matrix *v_proj, Matrix *o_proj) {
+Matrix grouped_query_attention(Matrix *x, Matrix *q_proj, Matrix *k_proj, Matrix *v_proj, Matrix *o_proj,
+                                          Matrix *q_bias, Matrix *k_bias, Matrix *v_bias) {
 
     // First, compute the intial Q, K, V values
-    Matrix *q = naive_matmul(x, q_proj);
-    Matrix *k = naive_matmul(x, k_proj);
-    Matrix *v = naive_matmul(x, v_proj);
+    Matrix q_pre_bias = naive_matmul(x, q_proj);
+    Matrix k_pre_bias = naive_matmul(x, k_proj);
+    Matrix v_pre_bias = naive_matmul(x, v_proj);
+
+    Matrix q = add_matrix(&q_pre_bias, q_bias); // n x 896
+    Matrix k = add_matrix(&k_pre_bias, k_bias); // n x 128
+    Matrix v = add_matrix(&v_pre_bias, v_bias); // n x 128
 
     
+    // Partition based on the Q / KV head count
 
+    // Compute all of the individual scaled dot product attention scores (7*2=14 total)
+
+    // Concatenate the attention scores into an [n x 896] matrix
+
+    // Project attention scores back to 'model space' with output proj matrix
+    
+
+    free_matrix(&q_pre_bias);
+    free_matrix(&k_pre_bias);
+    free_matrix(&v_pre_bias);
 }
 
 
