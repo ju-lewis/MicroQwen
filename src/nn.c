@@ -113,7 +113,12 @@ Matrix scaled_dp_attention(Matrix *q, Matrix *k, Matrix *v) {
 }
 
 
-Matrix grouped_query_attention(Matrix *x, Matrix *q_proj, Matrix *k_proj, Matrix *v_proj) {
+Matrix grouped_query_attention(Matrix *x, Matrix *q_proj, Matrix *k_proj, Matrix *v_proj, Matrix *o_proj) {
+
+    // First, compute the intial Q, K, V values
+    Matrix *q = naive_matmul(x, q_proj);
+    Matrix *k = naive_matmul(x, k_proj);
+    Matrix *v = naive_matmul(x, v_proj);
 
     
 
