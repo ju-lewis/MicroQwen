@@ -20,10 +20,11 @@ int main() {
 
 
     Matrix weights = new_matrix(2, 3);
+    weights.vals[0][0] = new_bf16(1.0f);
 
 
     FFModel model = init_ff_model();
-    add_ff_layer(&model, &weights, relu);
+    add_ff_layer(&model, &weights, softmax);
 
     Matrix input = new_matrix(1, 2); // Init 1x2 row vector
     input.vals[0][0] = new_bf16(1.0f);

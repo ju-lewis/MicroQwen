@@ -1,6 +1,7 @@
 
 #include <stdlib.h>
 #include <assert.h>
+#include <math.h>
 
 #include "nn.h"
 
@@ -96,7 +97,22 @@ void relu(Matrix *logits) {
 }
 
 
+void softmax(Matrix *logits) {
+    // Ensure the Matrix represents a row vector
+    assert(logits->n_rows == 1);
 
+    // Sum exponentials of logits
+    bfloat16 exp_sum = 0;
+    for (unsigned int j=0; j<logits->n_cols; j++) {
+        exp_sum = add_bf16(exp_sum, new_bf16(expf(bf16_to_float(logits->vals[0][j]))));
+    }
+
+    
+    for (unsigned int i=0; i<logits->n_cols; i++) {
+        logits->vals[0][i] = div_bf16(logits->vals[0][i], exp_sum);
+    }
+
+}
 
 
 

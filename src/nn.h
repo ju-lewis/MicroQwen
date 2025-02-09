@@ -38,7 +38,12 @@ Matrix ff_predict(FFModel *model, Matrix *input);
 
 
 /* ========================== ACTIVATION FUNCTIONS ========================= */
+
+/* In-place ReLU activation function */
 void relu(Matrix *logits);
+
+/* In-place softmax activation function */
+void softmax(Matrix *logits);
 
 
 #endif
