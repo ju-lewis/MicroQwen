@@ -60,6 +60,9 @@ Matrix add_matrix(Matrix *a, Matrix *b);
 /* Perform simple subtraction on 2 matrices */
 Matrix subtract_matrix(Matrix *a, Matrix *b);
 
+/* Perform a scalar multiplication over a matrix */
+Matrix scalar_multiply(Matrix *m, bfloat16 coeff);
+
 /* Naive (by-hand method) matrix multiplication - just for simple debugging */
 Matrix naive_matmul(Matrix *a, Matrix *b);
 
@@ -79,9 +82,12 @@ void print_matrix_shape(Matrix *m);
 /* Creates a one-hot encoding vector given a scalar quantity */
 Matrix one_hot_encoding(unsigned int dim, unsigned int idx);
 
-
 /* In-place transposes a matrix */
 void transpose(Matrix *m);
+
+/* Deep-clones the values of a matrix */
+Matrix clone_matrix(Matrix *m);
+
 
 
 

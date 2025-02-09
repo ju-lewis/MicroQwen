@@ -86,6 +86,33 @@ Matrix ff_predict(FFModel *model, Matrix *input) {
 }
 
 
+Matrix scaled_dp_attention(Matrix *q, Matrix *k, Matrix *v) {
+    
+    // Deep clone matrix, in case keys are to be used later after the transpose
+    Matrix keys_copy = clone_matrix(k);
+
+    transpose(&keys_copy);
+
+    Matrix dot_prod = naive_matmul(q, &keys_copy);
+
+    // Scale by the inverse square root of the dimension of the keys vector
+    bfloat16 scale_factor = new_bf16((float)sqrt(k->n_cols));
+    Matrix scaled_dot_prod = scalar_multiply(&dot_prod, scale_factor);
+    
+    
+    softmax(&scaled_dot_prod);
+
+    Matrix attention_result = naive_matmul(&scaled_dot_prod, v);
+
+
+    free_matrix(&dot_prod);
+    free_matrix(&keys_copy);
+    free_matrix(&scaled_dot_prod);
+
+    return attention_result;
+}
+
+
 void relu(Matrix *logits) {
     // Ensure the Matrix represents a row vector
     assert(logits->n_rows == 1);

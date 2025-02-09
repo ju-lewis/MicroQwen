@@ -126,6 +126,18 @@ Matrix subtract_matrix(Matrix *a, Matrix *b) {
     return c;
 }
 
+/* Perform a scalar multiplication over a matrix */
+Matrix scalar_multiply(Matrix *m, bfloat16 coeff) {
+    Matrix result = new_matrix(m->n_rows, m->n_cols);
+
+    for (unsigned int i=0; i<m->n_rows; i++) {
+        for (unsigned int j=0; j<m->n_cols; j++) {
+            result.vals[i][j] = mul_bf16(m->vals[i][j], coeff);
+        }
+    }
+
+    return result;
+}
 
 Matrix naive_matmul(Matrix *a, Matrix *b) {
     assert(a->n_cols == b->n_rows);
@@ -215,13 +227,14 @@ void pad_matrix(Matrix *m) {
 }
 
 
-
+/* Frees the heap-allocated values in a `Matrix` */
 void free_matrix(Matrix *m) {
     for (unsigned int i=0; i<m->n_rows; i++) {
         free(m->vals[i]);
     }
     free(m->vals);
 }
+
 
 /* In-place transposes a matrix */
 void transpose(Matrix *m) {
@@ -240,10 +253,15 @@ void transpose(Matrix *m) {
     *m = mt;
 }
 
+/* Deep-clones the values of a matrix */
+Matrix clone_matrix(Matrix *m) {
+    Matrix new_m = new_matrix(m->n_rows, m->n_cols);
+    
+    for (unsigned int i=0; i<m->n_rows; i++) {
+        memcpy(new_m.vals, m->vals, sizeof(bfloat16) * m->n_cols);
+    }
 
-
-
-
-
+    return new_m;
+}
 
 

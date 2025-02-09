@@ -39,6 +39,12 @@ void free_ff_model(FFModel *model);
 Matrix ff_predict(FFModel *model, Matrix *input);
 
 
+/* ==================== ATTENTION SUBLAYER DECLARATIONS ==================== */
+
+/* Performs a scaled dot product attention computation given queries, keys, and values */
+Matrix scaled_dp_attention(Matrix *q, Matrix *k, Matrix *v);
+
+
 /* ========================== ACTIVATION FUNCTIONS ========================= */
 
 /* In-place ReLU activation function */
