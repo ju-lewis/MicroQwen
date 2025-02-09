@@ -85,6 +85,18 @@ Matrix ff_predict(FFModel *model, Matrix *input) {
 }
 
 
+void relu(Matrix *logits) {
+    // Ensure the Matrix represents a row vector
+    assert(logits->n_rows == 1);
+
+    // Apply ReLU activation across the whole vector
+    for (unsigned int i=0; i<logits->n_cols; i++) {
+        logits->vals[0][i] = MAX(0, logits->vals[0][i]);
+    }
+}
+
+
+
 
 
 

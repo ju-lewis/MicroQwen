@@ -37,5 +37,8 @@ void free_ff_model(FFModel *model);
 Matrix ff_predict(FFModel *model, Matrix *input);
 
 
+/* ========================== ACTIVATION FUNCTIONS ========================= */
+void relu(Matrix *logits);
+
 
 #endif

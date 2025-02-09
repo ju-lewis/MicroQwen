@@ -14,7 +14,7 @@ Write a minimal Qwen2-0.5b inference engine from scratch in C, with the goal of 
 
 **Todo:**
 (Embedding)
-- [ ] Lookup vector embedding for parsed token
+- [x] Lookup vector embedding for parsed token
 
 (Inference)
 - [ ]
