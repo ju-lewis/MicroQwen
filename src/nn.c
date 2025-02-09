@@ -113,6 +113,7 @@ Matrix scaled_dp_attention(Matrix *q, Matrix *k, Matrix *v) {
 }
 
 
+/* In-place ReLU activation function */
 void relu(Matrix *logits) {
     // Ensure the Matrix represents a row vector
     assert(logits->n_rows == 1);
@@ -123,7 +124,7 @@ void relu(Matrix *logits) {
     }
 }
 
-
+/* In-place softmax activation function */
 void softmax(Matrix *logits) {
     // Ensure the Matrix represents a row vector
     assert(logits->n_rows == 1);
@@ -137,6 +138,17 @@ void softmax(Matrix *logits) {
     
     for (unsigned int i=0; i<logits->n_cols; i++) {
         logits->vals[0][i] = div_bf16(logits->vals[0][i], exp_sum);
+    }
+}
+
+/* In-place sigmoid activation function */
+void sigmoid(Matrix *logits) {
+    // Ensure the Matrix represents a row vector
+    assert(logits->n_rows == 1);
+
+    // Apply sigmoid activation across the whole vector
+    for (unsigned int i=0; i<logits->n_cols; i++) {
+        logits->vals[0][i] = new_bf16((float)(1.0f / (1.0f + exp(-bf16_to_float(logits->vals[0][i])))));
     }
 
 }
