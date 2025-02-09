@@ -44,6 +44,8 @@ Matrix ff_predict(FFModel *model, Matrix *input);
 /* Performs a scaled dot product attention computation given queries, keys, and values */
 Matrix scaled_dp_attention(Matrix *q, Matrix *k, Matrix *v);
 
+//Matrix multi_query_attention(Matrix );
+
 
 /* ========================== ACTIVATION FUNCTIONS ========================= */
 

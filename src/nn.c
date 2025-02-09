@@ -137,7 +137,7 @@ void softmax(Matrix *logits) {
 
     
     for (unsigned int i=0; i<logits->n_cols; i++) {
-        logits->vals[0][i] = div_bf16(logits->vals[0][i], exp_sum);
+        logits->vals[0][i] = div_bf16(new_bf16(expf(bf16_to_float(logits->vals[0][i]))), exp_sum);
     }
 }
 
