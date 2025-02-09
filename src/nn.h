@@ -12,6 +12,8 @@
 #define QWEN25_VOCAB_SIZE 151936
 
 
+/* =================== FEED FORWARD NETWORK DECLARATIONS =================== */
+
 typedef struct {
     Matrix weights;
     void (*activation_fn)(Matrix *pre_activation);

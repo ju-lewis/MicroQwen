@@ -80,5 +80,10 @@ void print_matrix_shape(Matrix *m);
 Matrix one_hot_encoding(unsigned int dim, unsigned int idx);
 
 
+/* In-place transposes a matrix */
+void transpose(Matrix *m);
+
+
+
 #define LINALG_H
 #endif

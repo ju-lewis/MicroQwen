@@ -223,5 +223,27 @@ void free_matrix(Matrix *m) {
     free(m->vals);
 }
 
+/* In-place transposes a matrix */
+void transpose(Matrix *m) {
+    
+    // Create new matrix to hold values
+    Matrix mt = new_matrix(m->n_cols, m->n_rows);
+
+    for (unsigned int i=0; i<m->n_rows; i++) {
+        for (unsigned int j=0; j<m->n_cols; j++) {
+            mt.vals[j][i] = m->vals[i][j];
+        }
+    }
+    // Free the original values in the matrix
+    free_matrix(m); 
+
+    *m = mt;
+}
+
+
+
+
+
+
 
 
