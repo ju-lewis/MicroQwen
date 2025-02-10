@@ -23,6 +23,12 @@ typedef struct {
 /* A partition into a `Matrix` object (Just provides semantic distinction) */
 typedef Matrix MatrixPartition;
 
+
+typedef enum {
+    ROW,
+    COLUMN
+} Axis;
+
 /* =========================== BFLOAT FUNCTIONS ============================ */
 
 
@@ -93,6 +99,9 @@ Matrix clone_matrix(Matrix *m);
 /* Creates a partition into a `Matrix` */
 MatrixPartition partition_matrix(Matrix *m, unsigned int n_rows, unsigned int n_cols, 
         unsigned int row_offset, unsigned int col_offset);
+
+/* concatenates `n` matrices along a given axis */
+Matrix concat_matrices(Matrix *ms, int n, Axis axis);
 
 
 #define LINALG_H

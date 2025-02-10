@@ -18,6 +18,14 @@ int main() {
     //Matrix m = read_binary_matrix(fp, base_offset, QWEN25_VOCAB_SIZE, 896);
     //fclose(fp);
 
+    Matrix a = new_matrix(2, 2);
+    Matrix b = new_matrix(2, 2);
+
+    Matrix ms[2] = {a, b};
+
+    Matrix c = concat_matrices(ms, 2, COLUMN);
+
+    print_matrix(&c);
 
     return 0;
 }

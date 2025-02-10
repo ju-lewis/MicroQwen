@@ -10,6 +10,8 @@
 
 
 #define QWEN25_VOCAB_SIZE 151936
+#define QUERY_HEAD_COUNT 14
+#define KV_HEAD_COUNT 2
 
 
 /* =================== FEED FORWARD NETWORK DECLARATIONS =================== */
@@ -42,7 +44,7 @@ Matrix ff_predict(FFModel *model, Matrix *input);
 /* ==================== ATTENTION SUBLAYER DECLARATIONS ==================== */
 
 /* Performs a scaled dot product attention computation given queries, keys, and values */
-Matrix scaled_dp_attention(Matrix *q, Matrix *k, Matrix *v);
+Matrix scaled_dp_attention(Matrix *q, Matrix *k, Matrix *v, int requires_transpose);
 
 Matrix grouped_query_attention(Matrix *x, Matrix *q_proj, Matrix *k_proj, Matrix *v_proj, Matrix *o_proj,
                                           Matrix *q_bias, Matrix *k_bias, Matrix *v_bias);

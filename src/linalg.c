@@ -290,3 +290,57 @@ MatrixPartition partition_matrix(Matrix *m, unsigned int n_rows, unsigned int n_
     return p;
 }
 
+
+/* concatenates `n` matrices along a given axis */
+Matrix concat_matrices(Matrix *ms, int n, Axis axis) {
+    assert(n > 0);
+
+    Matrix output;
+
+    if (axis == COLUMN) {
+        unsigned int total_cols = 0;
+        for (int i=0; i<n; i++) {
+            assert(ms[i].n_rows == ms[0].n_rows);
+            total_cols += ms[i].n_cols;
+        }
+        
+        output = new_matrix(ms[0].n_rows, total_cols);
+        unsigned int cols_copied = 0;
+        for (int i=0; i<n; i++) {
+
+            // Copy each row from the current matrix
+            for (unsigned int j=0; j<output.n_rows; j++) {
+                memcpy(&output.vals[j][cols_copied], ms[i].vals[j], ms[i].n_cols);
+            }
+
+            cols_copied += ms[i].n_cols;
+        }
+
+    } else {
+        unsigned int total_rows = 0;
+        for (int i=0; i<n; i++) {
+            assert(ms[i].n_cols == ms[0].n_cols);
+            total_rows += ms[i].n_rows;
+        }
+
+        output = new_matrix(total_rows, ms[0].n_cols);
+        unsigned int rows_copied = 0;
+        for (int i=0; i<n; i++) {
+
+            
+            for (unsigned int j=0; j<ms[i].n_rows; j++) {
+                // Copy individual row into output matrix
+                memcpy(output.vals[rows_copied], ms[i].vals[j], ms[i].n_cols);
+                rows_copied++;
+            }
+        }
+    }
+    
+
+    return output;
+}
+
+
+
+
+

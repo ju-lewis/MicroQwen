@@ -86,12 +86,14 @@ Matrix ff_predict(FFModel *model, Matrix *input) {
 }
 
 /* Performs a scaled dot product attention computation given queries, keys, and values */
-Matrix scaled_dp_attention(Matrix *q, Matrix *k, Matrix *v) {
+Matrix scaled_dp_attention(Matrix *q, Matrix *k, Matrix *v, int requires_transpose) {
     
     // Deep clone matrix, in case keys are to be used later after the transpose
     Matrix keys_copy = clone_matrix(k);
 
-    transpose(&keys_copy);
+    if (requires_transpose) {
+        transpose(&keys_copy);
+    }
 
     Matrix dot_prod = naive_matmul(q, &keys_copy);
 
@@ -116,7 +118,7 @@ Matrix scaled_dp_attention(Matrix *q, Matrix *k, Matrix *v) {
 Matrix grouped_query_attention(Matrix *x, Matrix *q_proj, Matrix *k_proj, Matrix *v_proj, Matrix *o_proj,
                                           Matrix *q_bias, Matrix *k_bias, Matrix *v_bias) {
 
-    // First, compute the intial Q, K, V values
+    // First, compute the intial Q, K, V values (project into attention space)
     Matrix q_pre_bias = naive_matmul(x, q_proj);
     Matrix k_pre_bias = naive_matmul(x, k_proj);
     Matrix v_pre_bias = naive_matmul(x, v_proj);
@@ -127,17 +129,48 @@ Matrix grouped_query_attention(Matrix *x, Matrix *q_proj, Matrix *k_proj, Matrix
 
     
     // Partition based on the Q / KV head count
+    MatrixPartition q_partitions[QUERY_HEAD_COUNT]; // Each partition is [n x 64]
+    MatrixPartition k_partitions[KV_HEAD_COUNT];    // Each partition is [n x 64]
+    MatrixPartition v_partitions[KV_HEAD_COUNT];    // Each partition is [n x 64]
+
+    unsigned int  q_partition_size = q.n_cols / QUERY_HEAD_COUNT;
+    unsigned int kv_partition_size = q.n_cols / KV_HEAD_COUNT;
+    
+    for (int i=0; i<QUERY_HEAD_COUNT; i++) {
+        q_partitions[i] = partition_matrix(&q, q.n_rows, q_partition_size, 0, i*q_partition_size);
+    }
+    for (int i=0; i<KV_HEAD_COUNT; i++) {
+        k_partitions[i] = partition_matrix(&k, q.n_rows, kv_partition_size, 0, i*kv_partition_size);
+        v_partitions[i] = partition_matrix(&v, q.n_rows, kv_partition_size, 0, i*kv_partition_size);
+    }
 
     // Compute all of the individual scaled dot product attention scores (7*2=14 total)
+    Matrix attention_scores[QUERY_HEAD_COUNT];
+    
+    int score_idx = 0;
+    for (int i=0; i<KV_HEAD_COUNT; i++) {
+        for (int j=0; j<QUERY_HEAD_COUNT / KV_HEAD_COUNT; j++) {
+            // Compute dot product attention for the current q/kv combination
+            // The first 7 query heads correspond to the first KV head, and the
+            // next 7 query heads correspond to the second KV head.
+            attention_scores[score_idx] = scaled_dp_attention(&q_partitions[score_idx], &k_partitions[i], &v_partitions[i], false);
 
-    // Concatenate the attention scores into an [n x 896] matrix
+            score_idx++;
+        }
+    }
+
+    // Concatenate the attention scores into an [n x 896] matrix (from 14 [n x 64] matrices)
 
     // Project attention scores back to 'model space' with output proj matrix
     
 
+
     free_matrix(&q_pre_bias);
     free_matrix(&k_pre_bias);
     free_matrix(&v_pre_bias);
+    free_matrix(&q);
+    free_matrix(&k);
+    free_matrix(&v);
 }
 
 
