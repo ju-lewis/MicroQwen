@@ -20,6 +20,8 @@ typedef struct {
     bfloat16 **vals;
 } Matrix;
 
+/* A partition into a `Matrix` object (Just provides semantic distinction) */
+typedef Matrix MatrixPartition;
 
 /* =========================== BFLOAT FUNCTIONS ============================ */
 
@@ -88,7 +90,9 @@ void transpose(Matrix *m);
 /* Deep-clones the values of a matrix */
 Matrix clone_matrix(Matrix *m);
 
-
+/* Creates a partition into a `Matrix` */
+MatrixPartition partition_matrix(Matrix *m, unsigned int n_rows, unsigned int n_cols, 
+        unsigned int row_offset, unsigned int col_offset);
 
 
 #define LINALG_H

@@ -264,4 +264,29 @@ Matrix clone_matrix(Matrix *m) {
     return new_m;
 }
 
+/* Creates a partition into a `Matrix` */
+MatrixPartition partition_matrix(Matrix *m, unsigned int n_rows, unsigned int n_cols, unsigned int row_offset, unsigned int col_offset) {
+    
+    // Validate partition size
+    assert(n_rows <= m->n_rows - row_offset && n_cols <= m->n_cols - col_offset);
+
+    // Get row offset values
+    bfloat16 **vals = &m->vals[row_offset];
+
+    // Now iterate through and offset columns
+    for (unsigned int i=0; i < n_rows; i++) {
+        // Remember, C compiler treat this as syntactic sugar for vals[i] = &vals[i][col_offset]
+        vals[i] += col_offset; 
+    }
+
+
+    MatrixPartition p = {
+        .n_rows = n_rows,
+        .n_cols = n_cols,
+        .vals = vals
+    };
+
+
+    return p;
+}
 
