@@ -136,10 +136,10 @@ Matrix grouped_query_attention(Matrix *x, Matrix *q_proj, Matrix *k_proj, Matrix
     unsigned int  q_partition_size = q.n_cols / QUERY_HEAD_COUNT;
     unsigned int kv_partition_size = q.n_cols / KV_HEAD_COUNT;
     
-    for (int i=0; i<QUERY_HEAD_COUNT; i++) {
+    for (unsigned int i=0; i<QUERY_HEAD_COUNT; i++) {
         q_partitions[i] = partition_matrix(&q, q.n_rows, q_partition_size, 0, i*q_partition_size);
     }
-    for (int i=0; i<KV_HEAD_COUNT; i++) {
+    for (unsigned int i=0; i<KV_HEAD_COUNT; i++) {
         k_partitions[i] = partition_matrix(&k, q.n_rows, kv_partition_size, 0, i*kv_partition_size);
         v_partitions[i] = partition_matrix(&v, q.n_rows, kv_partition_size, 0, i*kv_partition_size);
     }
@@ -160,17 +160,25 @@ Matrix grouped_query_attention(Matrix *x, Matrix *q_proj, Matrix *k_proj, Matrix
     }
 
     // Concatenate the attention scores into an [n x 896] matrix (from 14 [n x 64] matrices)
+    Matrix concat_output = concat_matrices(attention_scores, QUERY_HEAD_COUNT, COLUMN);
 
     // Project attention scores back to 'model space' with output proj matrix
+    Matrix output = naive_matmul(&concat_output, o_proj);
     
 
-
+    // That's a lot of heap memory lol
+    for (int i=0; i<QUERY_HEAD_COUNT; i++) {
+        free_matrix(&attention_scores[i]);
+    }
+    free_matrix(&concat_output);
     free_matrix(&q_pre_bias);
     free_matrix(&k_pre_bias);
     free_matrix(&v_pre_bias);
     free_matrix(&q);
     free_matrix(&k);
     free_matrix(&v);
+
+    return output;
 }
 
 
