@@ -9,6 +9,7 @@ I'm referencing the following documents for implementation details:
 - <a href="https://arxiv.org/abs/2412.15115">Qwen2.5 Technical Report</a>
 - <a href="https://arxiv.org/abs/1706.03762">Attention Is All You Need</a>
 - <a href="https://jalammar.github.io/illustrated-transformer/">The Illustrated Transformer</a>
+- <a href="https://arxiv.org/pdf/2305.13245">GQA: Training Generalized Multi-Query Transformer Models from Multi-Head Checkpoints</a>
 
 **Note**:
 There are *many* areas for improvement in the model's implementation at the moment, but my goal is just to get it working first 
