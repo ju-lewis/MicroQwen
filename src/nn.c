@@ -153,7 +153,7 @@ Matrix grouped_query_attention(Matrix *x, Matrix *q_proj, Matrix *k_proj, Matrix
             // Compute dot product attention for the current q/kv combination
             // The first 7 query heads correspond to the first KV head, and the
             // next 7 query heads correspond to the second KV head.
-            attention_scores[score_idx] = scaled_dp_attention(&q_partitions[score_idx], &k_partitions[i], &v_partitions[i], false);
+            attention_scores[score_idx] = scaled_dp_attention(&q_partitions[score_idx], &k_partitions[i], &v_partitions[i], 0);
 
             score_idx++;
         }
@@ -237,5 +237,27 @@ void silu(Matrix *logits) {
 }
 
 
+/* SwiGLU activation function, with Swish = SiLU (\beta = 1) */
+Matrix swiglu(Matrix *logits, Matrix *up_proj, Matrix *gate_proj) {
+
+    // Project input vector
+    Matrix a = naive_matmul(logits, up_proj);
+    Matrix b = naive_matmul(logits, gate_proj);
+    assert(a.n_rows == b.n_rows && a.n_cols == b.n_cols);
+
+    // Run Swish (SiLU in this case) on the gate projection
+    silu(&b);
+
+    // Perform an element-wise product between a and b
+    Matrix output = new_matrix(a.n_rows, a.n_cols);
+    for (unsigned int i=0; i<a.n_cols; i++) {
+        output.vals[0][i] = mul_bf16(a.vals[0][i], b.vals[0][i]);
+    }
+
+    free_matrix(&a);
+    free_matrix(&b);
+
+    return output;
+}
 
 

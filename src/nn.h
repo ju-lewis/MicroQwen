@@ -64,5 +64,8 @@ void sigmoid(Matrix *logits);
 /* In-place SiLU activation function */
 void silu(Matrix *logits);
 
+/* SwiGLU activation function, with Swish = SiLU (\beta = 1) */
+Matrix swiglu(Matrix *logits, Matrix *up_proj, Matrix *gate_proj);
+
 
 #endif

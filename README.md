@@ -31,8 +31,9 @@ program.
 - [x] Dot product self-attention head
 - [x] Grouped Query Attention mechanism
 - [ ] Attention sub-layer masking (to preseve auto-regression)
-- [ ] SwiGLU non-linear activation
+- [x] SwiGLU non-linear activation
 - [ ] RoPE Rotary positional embeddings
+- [ ] Layer RMS normalisation
 - [ ] Complete transformer layer struct
 - [ ] Un-embedding layer
 - [ ] Benchmark token generation performance and start multithreading computations
