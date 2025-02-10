@@ -223,5 +223,19 @@ void sigmoid(Matrix *logits) {
 
 }
 
+/* In-place SiLU activation function */
+void silu(Matrix *logits) {
+    assert(logits->n_rows == 1);
+
+    // Apply SiLU across the whole vector
+    for (unsigned int i=0; i<logits->n_cols; i++) {
+        logits->vals[0][i] = div_bf16(
+            logits->vals[0][i], 
+            new_bf16(1.0f + expf(-bf16_to_float(logits->vals[0][i])))
+        );
+    }
+}
+
+
 
 

@@ -58,9 +58,11 @@ void relu(Matrix *logits);
 /* In-place softmax activation function */
 void softmax(Matrix *logits);
 
-
 /* In-place sigmoid activation function */
 void sigmoid(Matrix *logits);
+
+/* In-place SiLU activation function */
+void silu(Matrix *logits);
 
 
 #endif

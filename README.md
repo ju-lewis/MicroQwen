@@ -32,7 +32,7 @@ program.
 - [x] Grouped Query Attention mechanism
 - [ ] Attention sub-layer masking (to preseve auto-regression)
 - [ ] SwiGLU non-linear activation
-- [ ] ROPE Rotary positional encodings
+- [ ] RoPE Rotary positional embeddings
 - [ ] Complete transformer layer struct
 - [ ] Un-embedding layer
 - [ ] Benchmark token generation performance and start multithreading computations
