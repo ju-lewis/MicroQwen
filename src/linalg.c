@@ -335,12 +335,23 @@ Matrix concat_matrices(Matrix *ms, int n, Axis axis) {
             }
         }
     }
-    
-
     return output;
 }
 
 
+/* In-place RMS Normalizes a vector */
+void rms_norm(Matrix *vec) {
+    
+    float square_sum = 0;
+    for (unsigned int i=0; i<vec->n_cols; i++) {
+        square_sum += powf(bf16_to_float(vec->vals[0][i]), 2);
+    }
+    bfloat16 rms = new_bf16(sqrtf((1.0f / (float)vec->n_cols) * square_sum));
+
+    for (unsigned int i=0; i<vec->n_cols; i++) {
+        vec->vals[0][i] = div_bf16(vec->vals[0][i], rms);
+    }
+}
 
 
 

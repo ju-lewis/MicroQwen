@@ -30,10 +30,11 @@ program.
 - [x] Feed forward neural networks (including relevant activation functions)
 - [x] Dot product self-attention head
 - [x] Grouped Query Attention mechanism
+- [ ] QKV Bias in GQA Attention
 - [ ] Attention sub-layer masking (to preseve auto-regression)
 - [x] SwiGLU non-linear activation
 - [ ] RoPE Rotary positional embeddings
-- [ ] Layer RMS normalisation
+- [x] Layer RMS normalisation
 - [ ] Complete transformer layer struct
 - [ ] Un-embedding layer
 - [ ] Benchmark token generation performance and start multithreading computations
