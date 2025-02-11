@@ -1,6 +1,6 @@
 # MicroQwen
 
-This is an ongoing project to implement inference for the smallest of the Qwen2.5 LLM models (0.5B params).
+This is an ongoing project to implement CPU-only inference for the smallest of the Qwen2.5 LLM models (0.5B params).
 
 The purpose of this project is to learn more about the low-level implementation details of auto-regressive transformers,
 as well as practice optimising computationally expensive arithmetic operations in C.
@@ -35,13 +35,16 @@ attention) so there are quite a few instance of me implementing based on my best
 - [x] Dot product self-attention head
 - [x] Grouped Query Attention mechanism
 - [x] QKV Bias in GQA Attention
-- [ ] Attention sub-layer masking (to preseve auto-regression)
+- [ ] Attention sub-layer masking (to preserve auto-regression)
 - [x] SwiGLU non-linear activation
 - [ ] RoPE Rotary positional embeddings
 - [x] Layer RMS normalisation
 - [ ] Complete transformer layer struct
 - [ ] Un-embedding layer
-- [ ] Benchmark token generation performance and start multithreading computations
+
+## Testing
+- [ ] Benchmark token generation performance 
+- [ ] Multithread Computations
 
 
 After I finish implementing the core transformer decoder architecture, I'll go back through to integrate
