@@ -23,6 +23,10 @@ Both of these scripts exist because I don't feel like writing the byte-pair deco
 and I'm trying to avoid external dependencies for the core implementation. Hopefully in the future I can integrate everything into the main 
 program.
 
+There was also a considerable amount of missing information in the report (or inaccessible references, e.g. the citation regarding 
+QKV bias implementation in the attention layers, or the exact method for partitioning the projected Q,K,V matrices for grouped query 
+attention) so there are quite a few instance of me implementing based on my best guess - which could definitely impede success/performance.
+
 
 ## Implementation To-do List:
 - [x] bfloat16 type
@@ -30,7 +34,7 @@ program.
 - [x] Feed forward neural networks (including relevant activation functions)
 - [x] Dot product self-attention head
 - [x] Grouped Query Attention mechanism
-- [ ] QKV Bias in GQA Attention
+- [x] QKV Bias in GQA Attention
 - [ ] Attention sub-layer masking (to preseve auto-regression)
 - [x] SwiGLU non-linear activation
 - [ ] RoPE Rotary positional embeddings

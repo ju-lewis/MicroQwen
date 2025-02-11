@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <assert.h>
 #include <math.h>
+#include <string.h>
 
 #include "nn.h"
 
@@ -123,9 +124,19 @@ Matrix grouped_query_attention(Matrix *x, Matrix *q_proj, Matrix *k_proj, Matrix
     Matrix k_pre_bias = naive_matmul(x, k_proj);
     Matrix v_pre_bias = naive_matmul(x, v_proj);
 
-    Matrix q = add_matrix(&q_pre_bias, q_bias); // n x 896
-    Matrix k = add_matrix(&k_pre_bias, k_bias); // n x 128
-    Matrix v = add_matrix(&v_pre_bias, v_bias); // n x 128
+    // We need to add the bias to each row of the matrix (in case of batch processing 
+    // embedding row vectors) to allow us to add the bias
+    Matrix q_bias_padded = new_matrix(x->n_rows, q_bias->n_cols);
+    Matrix k_bias_padded = new_matrix(x->n_rows, k_bias->n_cols);
+    Matrix v_bias_padded = new_matrix(x->n_rows, v_bias->n_cols);
+    for (unsigned int i=0; i<x->n_rows; i++) {
+        memcpy(q_bias_padded.vals[i], q_bias->vals[0], q_bias->n_cols);
+        memcpy(k_bias_padded.vals[i], k_bias->vals[0], k_bias->n_cols);
+        memcpy(v_bias_padded.vals[i], v_bias->vals[0], v_bias->n_cols);
+    }
+    Matrix q = add_matrix(&q_pre_bias, &q_bias_padded); // n x 896
+    Matrix k = add_matrix(&k_pre_bias, &k_bias_padded); // n x 128
+    Matrix v = add_matrix(&v_pre_bias, &v_bias_padded); // n x 128
 
     
     // Partition based on the Q / KV head count
@@ -170,6 +181,9 @@ Matrix grouped_query_attention(Matrix *x, Matrix *q_proj, Matrix *k_proj, Matrix
     for (int i=0; i<QUERY_HEAD_COUNT; i++) {
         free_matrix(&attention_scores[i]);
     }
+    free_matrix(&q_bias_padded);
+    free_matrix(&k_bias_padded);
+    free_matrix(&v_bias_padded);
     free_matrix(&concat_output);
     free_matrix(&q_pre_bias);
     free_matrix(&k_pre_bias);
