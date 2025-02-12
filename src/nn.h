@@ -28,7 +28,6 @@ typedef struct {
     size_t num_layers;
 } FFModel;
 
-
 /* Creates an empty feed forward neural network */
 FFModel init_ff_model();
 
@@ -41,12 +40,31 @@ void free_ff_model(FFModel *model);
 /* Runs a full feed-forward prediction through a model */
 Matrix ff_predict(FFModel *model, Matrix *input);
 
+/* ======================= TRANSFORMER DECLARATIONS ======================== */
+
+
+typedef struct {
+    Matrix q_proj,
+           q_bias,
+           k_proj,
+           k_bias,
+           v_proj,
+           v_bias,
+           o_proj
+} AttentionLayer;
+
+
+typedef struct {
+    FFModel ffn;
+} TransformerCell;
+
 
 /* ==================== ATTENTION SUBLAYER DECLARATIONS ==================== */
 
 /* Performs a scaled dot product attention computation given queries, keys, and values */
 Matrix scaled_dp_attention(Matrix *q, Matrix *k, Matrix *v, int requires_transpose);
 
+/* Performs Grouped Query Attention (GQA) on a batch of input row vectors (stacked as a matrix) */
 Matrix grouped_query_attention(Matrix *x, Matrix *q_proj, Matrix *k_proj, Matrix *v_proj, Matrix *o_proj,
                                           Matrix *q_bias, Matrix *k_bias, Matrix *v_bias);
 

@@ -76,6 +76,7 @@ Matrix ff_predict(FFModel *model, Matrix *input) {
         }
 
         // Modify the outputs in-place to apply the activation function
+        // NOTE: Qwen2.5 doesn't apply any biases in the dense feed forward network, only QKV bias in the GQA attention sublayer
         model->layers[i].activation_fn(&layer_outputs);
         
         layer_inputs = layer_outputs;

@@ -11,6 +11,7 @@ I'm referencing the following documents for implementation details:
 - <a href="https://jalammar.github.io/illustrated-transformer/">The Illustrated Transformer</a>
 - <a href="https://arxiv.org/pdf/2305.13245">GQA: Training Generalized Multi-Query Transformer Models from Multi-Head Checkpoints</a>
 - <a href="https://arxiv.org/pdf/2104.09864">RoFormer: Enhanced Transformer With Rotary Position Embedding</a>
+- <a href="https://arxiv.org/pdf/2309.16609">Qwen Technical Report</a> (Contains slightly more information about specific architecture choices)
 
 **Note**:
 There are *many* areas for improvement in the model's implementation at the moment, but my goal is just to get it working first 
@@ -36,11 +37,11 @@ attention) so there are quite a few instance of me implementing based on my best
 - [x] Dot product self-attention head
 - [x] Grouped Query Attention mechanism
 - [x] QKV Bias in GQA Attention
-- [ ] Attention sub-layer masking (to preserve auto-regression)
-- [ ] Allow attention to function on batch embedding vectors
+- [x] Allow attention to function on batch embedding vectors
 - [x] SwiGLU non-linear activation
 - [x] RoPE Rotary positional embeddings
 - [x] Layer RMS normalisation
+- [ ] Attention sub-layer masking (to preserve auto-regression)
 - [ ] Complete transformer layer struct
 - [ ] Un-embedding layer
 
