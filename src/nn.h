@@ -12,6 +12,7 @@
 #define QWEN25_VOCAB_SIZE 151936
 #define QUERY_HEAD_COUNT 14
 #define KV_HEAD_COUNT 2
+#define ROPE_THETA 10000.0
 
 
 /* =================== FEED FORWARD NETWORK DECLARATIONS =================== */
@@ -67,5 +68,9 @@ void silu(Matrix *logits);
 /* SwiGLU activation function, with Swish = SiLU (\beta = 1) */
 Matrix swiglu(Matrix *logits, Matrix *up_proj, Matrix *gate_proj);
 
+
+/* ============================= OTHER FUNCTIONS =========================== */
+
+Matrix rotary_position_embedding(Matrix *vec, int position);
 
 #endif

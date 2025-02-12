@@ -275,3 +275,24 @@ Matrix swiglu(Matrix *logits, Matrix *up_proj, Matrix *gate_proj) {
 }
 
 
+/* Performs a rotary position embedding (RoPE) on an input vector */
+Matrix rotary_position_embedding(Matrix *vec, int position) {
+    
+    // Assert `vec` is an even-width column vector
+    assert(vec->n_rows == 1 && vec->n_cols % 2 == 0);
+
+    float rotation = ROPE_THETA * position;
+    
+    Matrix rotation_matrix = new_matrix(vec->n_cols, vec->n_cols);
+    // Increment by 2
+    for (unsigned int i=0; i<vec->n_cols; i += 2) {
+        // Create 2x2 (2D) rotation matrix in the current diagonal block
+    }
+    
+    // Apply 2D pair-wise rotations to the input vector
+    Matrix output = naive_matmul(&rotation_matrix, vec);
+    return output;
+}
+
+
+
