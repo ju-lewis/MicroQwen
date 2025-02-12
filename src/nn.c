@@ -88,12 +88,16 @@ Matrix ff_predict(FFModel *model, Matrix *input) {
 
 /* Performs a scaled dot product attention computation given queries, keys, and values */
 Matrix scaled_dp_attention(Matrix *q, Matrix *k, Matrix *v, int requires_transpose) {
+
     
     // Deep clone matrix, in case keys are to be used later after the transpose
     Matrix keys_copy = clone_matrix(k);
 
     if (requires_transpose) {
         transpose(&keys_copy);
+        assert(q->n_cols == k->n_cols && k->n_cols == v->n_cols);
+    } else {
+        assert(q->n_rows == k->n_rows && k->n_rows == v->n_rows);
     }
 
     Matrix dot_prod = naive_matmul(q, &keys_copy);
@@ -102,8 +106,8 @@ Matrix scaled_dp_attention(Matrix *q, Matrix *k, Matrix *v, int requires_transpo
     bfloat16 scale_factor = new_bf16((float)sqrt(k->n_cols));
     Matrix scaled_dot_prod = scalar_multiply(&dot_prod, scale_factor);
     
-    
     softmax(&scaled_dot_prod);
+
 
     Matrix attention_result = naive_matmul(&scaled_dot_prod, v);
 
@@ -210,18 +214,18 @@ void relu(Matrix *logits) {
 
 /* In-place softmax activation function */
 void softmax(Matrix *logits) {
-    // Ensure the Matrix represents a row vector
-    assert(logits->n_rows == 1);
 
-    // Sum exponentials of logits
-    bfloat16 exp_sum = 0;
-    for (unsigned int j=0; j<logits->n_cols; j++) {
-        exp_sum = add_bf16(exp_sum, new_bf16(expf(bf16_to_float(logits->vals[0][j]))));
-    }
+    for (unsigned int r=0; r<logits->n_rows; r++) {
 
-    
-    for (unsigned int i=0; i<logits->n_cols; i++) {
-        logits->vals[0][i] = div_bf16(new_bf16(expf(bf16_to_float(logits->vals[0][i]))), exp_sum);
+        // Sum exponentials of logits
+        bfloat16 exp_sum = 0;
+        for (unsigned int j=0; j<logits->n_cols; j++) {
+            exp_sum = add_bf16(exp_sum, new_bf16(expf(bf16_to_float(logits->vals[r][j]))));
+        }
+        
+        for (unsigned int i=0; i<logits->n_cols; i++) {
+            logits->vals[r][i] = div_bf16(new_bf16(expf(bf16_to_float(logits->vals[r][i]))), exp_sum);
+        }
     }
 }
 
