@@ -287,6 +287,12 @@ Matrix rotary_position_embedding(Matrix *vec, int position) {
     // Increment by 2
     for (unsigned int i=0; i<vec->n_cols; i += 2) {
         // Create 2x2 (2D) rotation matrix in the current diagonal block
+
+        vec->vals[i][i] = new_bf16(cosf(rotation));
+        vec->vals[i+1][i+1] = new_bf16(cosf(rotation));
+
+        vec->vals[i][i] = new_bf16(sinf(rotation));
+        vec->vals[i+1][i+1] = new_bf16(-sinf(rotation));
     }
     
     // Apply 2D pair-wise rotations to the input vector

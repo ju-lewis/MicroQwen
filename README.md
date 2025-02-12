@@ -37,8 +37,9 @@ attention) so there are quite a few instance of me implementing based on my best
 - [x] Grouped Query Attention mechanism
 - [x] QKV Bias in GQA Attention
 - [ ] Attention sub-layer masking (to preserve auto-regression)
+- [ ] Allow attention to function on batch embedding vectors
 - [x] SwiGLU non-linear activation
-- [ ] RoPE Rotary positional embeddings
+- [x] RoPE Rotary positional embeddings
 - [x] Layer RMS normalisation
 - [ ] Complete transformer layer struct
 - [ ] Un-embedding layer

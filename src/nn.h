@@ -12,7 +12,7 @@
 #define QWEN25_VOCAB_SIZE 151936
 #define QUERY_HEAD_COUNT 14
 #define KV_HEAD_COUNT 2
-#define ROPE_THETA 10000.0
+#define ROPE_THETA 10000.0f
 
 
 /* =================== FEED FORWARD NETWORK DECLARATIONS =================== */
