@@ -339,8 +339,8 @@ Matrix concat_matrices(Matrix *ms, int n, Axis axis) {
 }
 
 
-/* In-place RMS Normalizes a vector */
-void rms_norm(Matrix *vec) {
+/* In-place RMS Normalizes a vector, given a gain vector (for offsetting feature distribution) */
+void rms_norm(Matrix *vec, Matrix *gain) {
     
     float square_sum = 0;
     for (unsigned int i=0; i<vec->n_cols; i++) {
@@ -349,7 +349,7 @@ void rms_norm(Matrix *vec) {
     bfloat16 rms = new_bf16(sqrtf((1.0f / (float)vec->n_cols) * square_sum));
 
     for (unsigned int i=0; i<vec->n_cols; i++) {
-        vec->vals[0][i] = div_bf16(vec->vals[0][i], rms);
+        vec->vals[0][i] = mul_bf16(div_bf16(vec->vals[0][i], rms), gain->vals[0][i]);
     }
 }
 

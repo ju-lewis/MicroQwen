@@ -103,8 +103,8 @@ MatrixPartition partition_matrix(Matrix *m, unsigned int n_rows, unsigned int n_
 /* concatenates `n` matrices along a given axis */
 Matrix concat_matrices(Matrix *ms, int n, Axis axis);
 
-/* In-place RMS Normalizes a vector */
-void rms_norm(Matrix *vec);
+/* In-place RMS Normalizes a vector, given a gain vector (for offsetting feature distribution) */
+void rms_norm(Matrix *vec, Matrix *gain);
 
 
 #define LINALG_H

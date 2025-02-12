@@ -50,7 +50,7 @@ typedef struct {
            k_bias,
            v_proj,
            v_bias,
-           o_proj
+           o_proj;
 } AttentionLayer;
 
 
@@ -89,6 +89,7 @@ Matrix swiglu(Matrix *logits, Matrix *up_proj, Matrix *gate_proj);
 
 /* ============================= OTHER FUNCTIONS =========================== */
 
+/* Generates a rotary position embedding (RoPE) for a given token embedding */
 Matrix rotary_position_embedding(Matrix *vec, int position);
 
 #endif

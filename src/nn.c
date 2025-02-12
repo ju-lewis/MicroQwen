@@ -286,7 +286,7 @@ Matrix rotary_position_embedding(Matrix *vec, int position) {
     // Assert `vec` is an even-width column vector
     assert(vec->n_rows == 1 && vec->n_cols % 2 == 0);
 
-    float rotation = ROPE_THETA * position;
+    float rotation = ROPE_THETA * (float)position;
     
     Matrix rotation_matrix = new_matrix(vec->n_cols, vec->n_cols);
     // Increment by 2
