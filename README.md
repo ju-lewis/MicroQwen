@@ -42,9 +42,9 @@ attention) so there are quite a few instance of me implementing based on my best
 - [x] RoPE Rotary positional embeddings
 - [x] Layer RMS normalisation
 - [x] Un-embedding layer (For tied weight embeddings this is just a matmul with the embedding layer transposed)
+- [x] Complete transformer layer struct
 - [ ] Attention sub-layer masking (to preserve auto-regression)
 - [ ] Control token interpreter
-- [ ] Complete transformer layer struct
 
 ## Testing
 - [ ] Benchmark token generation performance 

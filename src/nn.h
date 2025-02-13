@@ -14,6 +14,8 @@
 #define KV_HEAD_COUNT 2
 #define ROPE_THETA 10000.0f
 
+#define EOS_TOKEN 151643
+
 
 /* =================== FEED FORWARD NETWORK DECLARATIONS =================== */
 
@@ -56,7 +58,16 @@ typedef struct {
 
 typedef struct {
     FFModel ffn;
+    AttentionLayer attn;
+    Matrix input_norm,
+           output_norm;
 } TransformerCell;
+
+typedef struct {
+    TransformerCell *layers;
+    unsigned int n_layers;
+    Matrix embeddingMatrix;
+} Decoder;
 
 
 /* ==================== ATTENTION SUBLAYER DECLARATIONS ==================== */
