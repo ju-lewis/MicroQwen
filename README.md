@@ -41,9 +41,10 @@ attention) so there are quite a few instance of me implementing based on my best
 - [x] SwiGLU non-linear activation
 - [x] RoPE Rotary positional embeddings
 - [x] Layer RMS normalisation
+- [x] Un-embedding layer (For tied weight embeddings this is just a matmul with the embedding layer transposed)
 - [ ] Attention sub-layer masking (to preserve auto-regression)
+- [ ] Control token interpreter
 - [ ] Complete transformer layer struct
-- [ ] Un-embedding layer
 
 ## Testing
 - [ ] Benchmark token generation performance 
