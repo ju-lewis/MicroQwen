@@ -65,7 +65,8 @@ typedef struct {
 
 typedef struct {
     TransformerCell *layers;
-    unsigned int n_layers;
+    unsigned int n_layers,
+                 d_model;
     Matrix embeddingMatrix;
 } Decoder;
 
@@ -102,5 +103,12 @@ Matrix swiglu(Matrix *logits, Matrix *up_proj, Matrix *gate_proj);
 
 /* Generates a rotary position embedding (RoPE) for a given token embedding */
 Matrix rotary_position_embedding(Matrix *vec, int position);
+
+
+/* Predicts the next embedding vector given a `Decoder` model and the previous 
+ * sequence of position encoded embeddings, as a [seq_len x d_model] `Matrix`.
+*/
+Matrix predict_next_embedding(Decoder *model, Matrix *sequence);
+
 
 #endif
