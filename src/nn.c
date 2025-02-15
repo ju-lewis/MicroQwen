@@ -309,6 +309,44 @@ Matrix rotary_position_embedding(Matrix *vec, int position) {
  * sequence of position encoded embeddings, as a [seq_len x d_model] `Matrix`.
 */
 Matrix predict_next_embedding(Decoder *model, Matrix *sequence) {
+
+    assert(sequence->n_cols == model->d_model);
+
+    Matrix curr_input = *sequence, 
+           prev_input = *sequence;
     
+    // Iterate through all decoder blocks
+    for (unsigned int i=0; n<model->n_layers; i++) {
+        // Shorten names
+        TransformerCell c = model->layers[i];
+        AttentionLayer attn_l = c.attn;
+
+        // Grouped Query Attention layer
+        Matrix attn_result = grouped_query_attention(sequence, &attn_l.q_proj, &attn_l.k_proj, &attn_l.v_proj, &attn_l.o_proj
+                                                               &attn_l.q_bias, &attn_l.k_bias, &attn_l.v_bias);
+
+        // Residual connection and normalisation
+        Matrix after_attn_residuals = add_matrix(&attn_result, sequence);
+        Matrix after_attn_norm = rms_norm(); //TODO: Update rms_norm to work on batch sequence
+
+
+        // FFN
+        Matrix ffn_result = ff_predict(&c.ffn, &after_attn_norm);
+
+        // Residual connection and normalisation
+        Matrix after_ffn_residuals = add_matrix(&ffn_result, &after_attn_norm);
+        Matrix after_ffn_norm = rms_norm();
+
+        // Free all unused matrices
+        
+
+        // Free all input matrices except for the initial input
+        if (prev_input.vals != sequence->vals) {
+            free_matrix(&prev_input);
+        }
+        prev_input = curr_input;
+        curr_input = after_ffn_norm;
+    }
+
 }
 
