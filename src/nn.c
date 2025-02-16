@@ -316,26 +316,26 @@ Matrix predict_next_embedding(Decoder *model, Matrix *sequence) {
            prev_input = *sequence;
     
     // Iterate through all decoder blocks
-    for (unsigned int i=0; n<model->n_layers; i++) {
+    for (unsigned int i=0; i<model->n_layers; i++) {
         // Shorten names
         TransformerCell c = model->layers[i];
         AttentionLayer attn_l = c.attn;
 
         // Grouped Query Attention layer
-        Matrix attn_result = grouped_query_attention(sequence, &attn_l.q_proj, &attn_l.k_proj, &attn_l.v_proj, &attn_l.o_proj
+        Matrix attn_result = grouped_query_attention(sequence, &attn_l.q_proj, &attn_l.k_proj, &attn_l.v_proj, &attn_l.o_proj,
                                                                &attn_l.q_bias, &attn_l.k_bias, &attn_l.v_bias);
 
         // Residual connection and normalisation
         Matrix after_attn_residuals = add_matrix(&attn_result, sequence);
-        Matrix after_attn_norm = rms_norm(); //TODO: Update rms_norm to work on batch sequence
+        rms_norm(&after_attn_residuals, &c.input_norm); 
 
 
         // FFN
-        Matrix ffn_result = ff_predict(&c.ffn, &after_attn_norm);
+        Matrix ffn_result = ff_predict(&c.ffn, &after_attn_residuals);
 
         // Residual connection and normalisation
-        Matrix after_ffn_residuals = add_matrix(&ffn_result, &after_attn_norm);
-        Matrix after_ffn_norm = rms_norm();
+        Matrix after_ffn_residuals = add_matrix(&ffn_result, &after_attn_residuals);
+        rms_norm(&after_ffn_residuals, &c.output_norm);
 
         // Free all unused matrices
         
@@ -345,11 +345,11 @@ Matrix predict_next_embedding(Decoder *model, Matrix *sequence) {
             free_matrix(&prev_input);
         }
         prev_input = curr_input;
-        curr_input = after_ffn_norm;
+        curr_input = after_ffn_residuals;
     }
 
     // The predicted next embedding vector in the sequence will be the *last* row of the output `Matrix`
-    Matrix next_embedding = clone_nth_row(&curr_input, curr_input->n_rows - 1);
+    Matrix next_embedding = clone_nth_row(&curr_input, curr_input.n_rows - 1);
     
     return next_embedding;
 }
