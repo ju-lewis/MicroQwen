@@ -354,4 +354,14 @@ void rms_norm(Matrix *vec, Matrix *gain) {
 }
 
 
+/* Clones the `n`th row of an input Matrix (returning the resulting row vector) */
+Matrix clone_nth_row(Matrix *m, unsigned int n) {
+    assert(n < m->n_rows);
+
+    Matrix vec = new_matrix(1, m->n_cols);
+    memcpy(vec.vals, &m->vals[n], m->n_cols * sizeof(bfloat16));
+    return vec;
+}
+
+
 

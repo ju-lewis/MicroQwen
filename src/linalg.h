@@ -106,6 +106,8 @@ Matrix concat_matrices(Matrix *ms, int n, Axis axis);
 /* In-place RMS Normalizes a vector, given a gain vector (for offsetting feature distribution) */
 void rms_norm(Matrix *vec, Matrix *gain);
 
+/* Clones the `n`th row of an input Matrix (returning the resulting row vector) */
+Matrix clone_nth_row(Matrix *m, unsigned int n);
 
 #define LINALG_H
 #endif

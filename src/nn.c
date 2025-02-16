@@ -348,5 +348,9 @@ Matrix predict_next_embedding(Decoder *model, Matrix *sequence) {
         curr_input = after_ffn_norm;
     }
 
+    // The predicted next embedding vector in the sequence will be the *last* row of the output `Matrix`
+    Matrix next_embedding = clone_nth_row(&curr_input, curr_input->n_rows - 1);
+    
+    return next_embedding;
 }
 
