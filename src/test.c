@@ -10,37 +10,33 @@
 
 int main() {
 
+    String parsed_format_map_filename = string_from_chars("./tensorshape.txt");
+    String safetensor_filename = string_from_chars("./Qwen2.5-0.5B/model.safetensors");
+    //String token_filename = string_from_chars("./tokens.txt");
+
     //TODO: Implement functions required to make this work
-    Decoder model = load_decoder_from_safetensor(parsed_format_map_filename, 
-                                             safetensor_filename);
-    Matrix sequence = load_tokenised_sequence(token_filename);
+    Decoder model = load_decoder_from_safetensor(parsed_format_map_filename, safetensor_filename);
+    //Matrix sequence = load_tokenised_sequence(token_filename);
+    //
+    //Matrix sequence_embeddings = naive_matmul(&sequence, &model.embedding_matrix);
 
-    // Load embedding matrix from .safetensors
-    FILE *fp = fopen("./Qwen2.5-0.5B/model.safetensors", "r");
-    long embedding_offset = 32288;
-    Matrix embedding_matrix = read_binary_matrix(fp, embedding_offset,
-                                                 QWEN25_VOCAB_SIZE, 896);
-    fclose(fp);
-    
-    Matrix sequence_embeddings = naive_matmul(&sequence, &embedding_matrix);
+    //Matrix prev_sequence = sequence_embeddings;
+    //Matrix next = empty_matrix(); // Creates matrix and sets `vals` to NULL
 
-    Matrix prev_sequence = sequence_embeddings;
-    Matrix next = empty_matrix(); // Creates matrix and sets `vals` to NULL
+    //// Now we can start running token generation (ABSTRACT THIS TO A GENERATION FN)
+    //while(!is_eos_token(next) || limit_reached) {
+    //    next = predict_next_embedding(&model, &sequence_embeddings);
 
-    // Now we can start running token generation (ABSTRACT THIS TO A GENERATION FN)
-    while(!is_eos_token(next) || limit_reached) {
-        next = predict_next_embedding(&model, &sequence_embeddings);
+    //    // Append `next` values to the sequence
+    //    free_matrix(&prev_sequence);
+    //    prev_sequence = sequence_embeddings;
+    //    sequence_embeddings = concat_matrices(/* .......... */);
 
-        // Append `next` values to the sequence
-        free_matrix(&prev_sequence);
-        prev_sequence = sequence_embeddings;
-        sequence_embeddings = concat_matrices(/* .......... */);
+    //    // Free `next`
+    //    free_matrix(&next);
+    //}
 
-        // Free `next`
-        free_matrix(&next);
-    }
-
-    // Re
+    //// Re
     
     return 0;
 }

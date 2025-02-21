@@ -17,8 +17,8 @@ linalg.o:
 	gcc ${flags} -c ${src}/linalg.c -o ${build}/linalg.o -O3
 
 
-safetensor.o: util.o
-	gcc ${flags} -c ${src}/safetensor.c -o ${build}/safetensor.o
+safetensor.o: util.o nn.o
+	gcc ${flags} -c ${build}/nn.o ${build}/util.o ${src}/safetensor.c -o ${build}/safetensor.o
 
 
 util.o:

@@ -67,7 +67,7 @@ typedef struct {
     TransformerCell *layers;
     unsigned int n_layers,
                  d_model;
-    Matrix embeddingMatrix;
+    Matrix embedding_matrix;
 } Decoder;
 
 

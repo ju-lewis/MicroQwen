@@ -10,8 +10,7 @@
 
 
 /* Reads a safetensor file header */
-String read_header(String filename) {
-    FILE *fp = fopen(filename.chars, "r");
+String read_header(FILE *fp) {
     assert(fp);
 
     uint64_t header_size;
@@ -23,9 +22,9 @@ String read_header(String filename) {
     // Read the JSON UTF-8 header into a String (all chars are in ASCII range)
     String header = alloc_empty_string(header_size + 1);
     fread(header.chars, sizeof(char), header_size, fp);
-    
-    fclose(fp);
 
+    header.len = header_size;
+    
     return header;
 }
 
@@ -44,6 +43,36 @@ Matrix read_binary_matrix(FILE *fp, long offset, unsigned int rows, unsigned int
     return m;
 }
 
+
+
+/* Loads the weights of a decoder model from a safetensor file using the custom representation 
+   as an easy-to-parse `map` for finding dimensions and byte offsets (see Python scripts for formatter) */
+Decoder load_decoder_from_safetensor(String parsed_format_filename, String safetensor_filename) {
+
+    printf("Opening files.\n");
+
+    FILE *map_fp = fopen(parsed_format_filename.chars, "r");
+    FILE *tensor_fp = fopen(safetensor_filename.chars, "r");
+    assert(map_fp);
+    assert(tensor_fp);
+
+    Decoder d;
+
+    printf("Reading header\n");
+    // Get the data offset by reading the safetensor file header
+    String header = read_header(tensor_fp);
+
+
+    printf("Header length: %ld\n", header.len);
+
+    // Load the embedding matrix.
+
+
+    fclose(map_fp);
+    fclose(tensor_fp);
+
+    return d;
+}
 
 
 

@@ -338,9 +338,9 @@ Matrix predict_next_embedding(Decoder *model, Matrix *sequence) {
         rms_norm(&after_ffn_residuals, &c.output_norm);
 
         // Free all unused matrices
-        free(&attn_result);
-        free(&after_attn_residuals);
-        free(&ffn_result);
+        free_matrix(&attn_result);
+        free_matrix(&after_attn_residuals);
+        free_matrix(&ffn_result);
 
         // Free all input matrices except for the initial input
         if (prev_input.vals != sequence->vals) {
