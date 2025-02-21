@@ -49,8 +49,6 @@ Matrix read_binary_matrix(FILE *fp, long offset, unsigned int rows, unsigned int
    as an easy-to-parse `map` for finding dimensions and byte offsets (see Python scripts for formatter) */
 Decoder load_decoder_from_safetensor(String parsed_format_filename, String safetensor_filename) {
 
-    printf("Opening files.\n");
-
     FILE *map_fp = fopen(parsed_format_filename.chars, "r");
     FILE *tensor_fp = fopen(safetensor_filename.chars, "r");
     assert(map_fp);
@@ -58,14 +56,31 @@ Decoder load_decoder_from_safetensor(String parsed_format_filename, String safet
 
     Decoder d;
 
-    printf("Reading header\n");
-    // Get the data offset by reading the safetensor file header
-    String header = read_header(tensor_fp);
+    // Get the data offset by reading the safetensor file header length
+    // (All)
+    uint64_t data_offset;
+    fread(&data_offset, sizeof(uint64_t), 1, tensor_fp);
+    
+    // Define tensor metadata
+    size_t mat_start, mat_end;
+    unsigned int rows, cols;
+    char tensor_name[MAX_TENSOR_NAME_LEN];
+    int fields_read, 
+        lines_parsed = 0;
 
 
-    printf("Header length: %ld\n", header.len);
+    // Read embedding matrix metadata
+    fields_read = fscanf(map_fp, TENSORSHAPE_FORMAT_STR, tensor_name, &rows, &cols, &mat_start, &mat_end);
+    if (fields_read != EXPECTED_FIELDS_PER_LINE) {
+        fprintf(stderr, "Failed to parse %s at line %d. Only parsed %d fields out of %d expected.\n", 
+                parsed_format_filename.chars, lines_parsed+1, fields_read, EXPECTED_FIELDS_PER_LINE);
+    }
+    // Load the embedding matrix
+    
+    lines_parsed++;
 
-    // Load the embedding matrix.
+    
+    
 
 
     fclose(map_fp);

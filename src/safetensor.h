@@ -14,7 +14,10 @@
 #include "nn.h"
 
 
-#define HEADER_METADATA_SIZE 8
+#define HEADER_METADATA_SIZE 8      // `.safetensors` metadata length (first 8 bytes of the file)
+#define MAX_TENSOR_NAME_LEN  64     // Longest name a tensor can have in a '.safetensors' file
+#define EXPECTED_FIELDS_PER_LINE 5  // The number of fields to be read per line in a 'tensorshape.txt' file
+#define TENSORSHAPE_FORMAT_STR "%s [%u, %u] [%lu, %lu]"
 
 /* Reads a safetensor file header */
 String read_header(FILE *fp);
