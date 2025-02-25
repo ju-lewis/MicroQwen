@@ -83,9 +83,12 @@ Decoder load_decoder_from_safetensor(String parsed_format_filename, String safet
     // Now read all transformer layers
     while (fscanf(map_fp, TENSORSHAPE_FORMAT_STR, tensor_name, &rows, &cols, &mat_start, &mat_end) == EXPECTED_FIELDS_PER_LINE) {
         // Determine which layer we're currently parsing
-        
+        int layer_num = 0;
+        sscanf(tensor_name, "%*s.%*s%d", &layer_num);
+    
+        printf("Currently parsing layer: %d\n", layer_num);
     }
-        
+    printf("Done parsing.\n");
     
 
 
