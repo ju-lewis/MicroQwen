@@ -75,11 +75,17 @@ Decoder load_decoder_from_safetensor(String parsed_format_filename, String safet
         fprintf(stderr, "Failed to parse %s at line %d. Only parsed %d fields out of %d expected.\n", 
                 parsed_format_filename.chars, lines_parsed+1, fields_read, EXPECTED_FIELDS_PER_LINE);
     }
-    // Load the embedding matrix
-    
     lines_parsed++;
 
+    // Load the embedding matrix
+    d.embedding_matrix = read_binary_matrix(tensor_fp, (long)(data_offset + mat_start), rows, cols);
     
+    // Now read all transformer layers
+    while (fscanf(map_fp, TENSORSHAPE_FORMAT_STR, tensor_name, &rows, &cols, &mat_start, &mat_end) == EXPECTED_FIELDS_PER_LINE) {
+        // Determine which layer we're currently parsing
+        
+    }
+        
     
 
 
