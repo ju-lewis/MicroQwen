@@ -61,6 +61,8 @@ Decoder load_decoder_from_safetensor(String parsed_format_filename, String safet
     uint64_t data_offset;
     fread(&data_offset, sizeof(uint64_t), 1, tensor_fp);
     
+    char line[MAX_LINE_LEN] = {0};
+
     // Define tensor metadata
     size_t mat_start, mat_end;
     unsigned int rows, cols;
@@ -70,7 +72,9 @@ Decoder load_decoder_from_safetensor(String parsed_format_filename, String safet
 
 
     // Read embedding matrix metadata
-    fields_read = fscanf(map_fp, TENSORSHAPE_FORMAT_STR, tensor_name, &rows, &cols, &mat_start, &mat_end);
+    assert(fgets(line, MAX_LINE_LEN, map_fp));
+
+    fields_read = sscanf(line, TENSORSHAPE_FORMAT_STR, tensor_name, &rows, &cols, &mat_start, &mat_end);
     if (fields_read != EXPECTED_FIELDS_PER_LINE) {
         fprintf(stderr, "Failed to parse %s at line %d. Only parsed %d fields out of %d expected.\n", 
                 parsed_format_filename.chars, lines_parsed+1, fields_read, EXPECTED_FIELDS_PER_LINE);
@@ -81,12 +85,31 @@ Decoder load_decoder_from_safetensor(String parsed_format_filename, String safet
     d.embedding_matrix = read_binary_matrix(tensor_fp, (long)(data_offset + mat_start), rows, cols);
     
 
-    while (fscanf(map_fp, TENSORSHAPE_FORMAT_STR, tensor_name, &rows, &cols, &mat_start, &mat_end) == EXPECTED_FIELDS_PER_LINE) {
+    int line_describes_vector = 0;
+    
+    while (fgets(line, MAX_LINE_LEN, map_fp)) {
+
+        if (sscanf(line, TENSORSHAPE_FORMAT_STR, tensor_name, &rows, &cols, &mat_start, &mat_end) == EXPECTED_FIELDS_PER_LINE) {
+            // First attempt to parse a rank 2 tensor (n x m matrix)
+            line_describes_vector = 0;
+        } else if (sscanf(line, ALT_TENSORSHAPE_FORMAT_STR, tensor_name, &cols, &mat_start, &mat_end) == EXPECTED_FIELDS_PER_LINE - 1) {
+            // If that fails, attempt to parse a rank 1 tensor (1 x n vector)
+            line_describes_vector = 1;
+        } else {
+            // Otherwise we failed parsing the line entirely
+            fprintf(stderr, "Failed to parse %s at line %d \"%s\".\n", parsed_format_filename.chars, lines_parsed + 1, line);
+        }
+
+
+
         // Determine which layer we're currently parsing
         int layer_num = 0;
         sscanf(tensor_name, "%*s.%*s%d", &layer_num);
-    
-        printf("Currently parsing layer: %d\n", layer_num);
+        //printf("Currently parsing layer: %d\n", layer_num);
+
+
+
+        lines_parsed++;
     }
     printf("Done parsing.\n");
     
