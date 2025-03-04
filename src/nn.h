@@ -9,12 +9,14 @@
 #include "linalg.h"
 
 
-#define QWEN25_VOCAB_SIZE 151936
-#define QUERY_HEAD_COUNT 14
-#define KV_HEAD_COUNT 2
-#define ROPE_THETA 10000.0f
+#define QWEN25_VOCAB_SIZE 151936  // Vocab size
+#define QUERY_HEAD_COUNT 14       // Query heads per GQA stage
+#define KV_HEAD_COUNT 2           // Key/value heads per GQA stage
+#define ROPE_THETA 10000.0f       // RoPE constant
+#define QWEN25_NUM_LAYERS 24      // Number of non-embedding layers
+#define QWEN25_D_MODEL 896        // Embedding dimension
 
-#define EOS_TOKEN 151643
+#define EOS_TOKEN 151643          // Hard-coded end-of-sequence token
 
 
 /* =================== FEED FORWARD NETWORK DECLARATIONS =================== */

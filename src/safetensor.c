@@ -56,6 +56,12 @@ Decoder load_decoder_from_safetensor(String parsed_format_filename, String safet
 
     Decoder d;
 
+    // Allocate array for the transformer layers
+    d.n_layers = QWEN25_NUM_LAYERS;
+    d.layers = TransformerCell[QWEN25_NUM_LAYERS];
+    d.d_model = QWEN25_D_MODEL;
+    
+
     // Get the data offset by reading the safetensor file header length
     // (All)
     uint64_t data_offset;
@@ -104,9 +110,9 @@ Decoder load_decoder_from_safetensor(String parsed_format_filename, String safet
 
         // Determine which layer we're currently parsing
         int layer_num = 0;
-        sscanf(tensor_name, "%*s.%*s%d", &layer_num);
-        //printf("Currently parsing layer: %d\n", layer_num);
-
+        sscanf(tensor_name, "model.layers.%d.%*s", &layer_num);
+        
+        
 
 
         lines_parsed++;
