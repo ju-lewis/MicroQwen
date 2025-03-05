@@ -66,7 +66,7 @@ typedef struct {
 } TransformerCell;
 
 typedef struct {
-    TransformerCell *layers;
+    TransformerCell layers[QWEN25_NUM_LAYERS];
     unsigned int n_layers,
                  d_model;
     Matrix embedding_matrix;

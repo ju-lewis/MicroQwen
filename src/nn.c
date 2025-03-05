@@ -56,7 +56,7 @@ Matrix ff_predict(FFModel *model, Matrix *input) {
     // Ensure the input is a row vector with the correct number of columns
     assert(
         model->num_layers > 0 && 
-        input->n_rows == 1    && 
+        //input->n_rows == 1    &&  
         model->layers[0].weights.n_rows == input->n_cols
     );
     

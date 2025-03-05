@@ -58,7 +58,6 @@ Decoder load_decoder_from_safetensor(String parsed_format_filename, String safet
 
     // Allocate array for the transformer layers
     d.n_layers = QWEN25_NUM_LAYERS;
-    d.layers = TransformerCell[QWEN25_NUM_LAYERS];
     d.d_model = QWEN25_D_MODEL;
     
 
@@ -107,12 +106,18 @@ Decoder load_decoder_from_safetensor(String parsed_format_filename, String safet
         }
 
 
-
         // Determine which layer we're currently parsing
         int layer_num = 0;
         sscanf(tensor_name, "model.layers.%d.%*s", &layer_num);
+        assert(layer_num >= 0 && layer_num < QWEN25_NUM_LAYERS);
+
+        // Determine what type of tensor is being parsed (i.e. its role in the transformer cell)
         
-        
+
+
+        // Now read the described tensor from the `.safetensors` binary into the `Decoder` structure
+        //d.layers[layer_num]
+        printf("%s\n", tensor_name);
 
 
         lines_parsed++;
@@ -129,3 +134,7 @@ Decoder load_decoder_from_safetensor(String parsed_format_filename, String safet
 
 
 
+/* Parses the name of a tensor to determine its role in a transformer cell */
+TensorType get_tensor_type(char *tensor_name) {
+    //TODO
+}
