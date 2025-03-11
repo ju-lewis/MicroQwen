@@ -18,7 +18,7 @@
 #define MAX_TENSOR_NAME_LEN  64     // Longest name a tensor can have in a '.safetensors' file
 #define EXPECTED_FIELDS_PER_LINE 5  // The number of fields to be read per line in a 'tensorshape.txt' file
 #define TENSORSHAPE_FORMAT_STR "%s [%u, %u] [%lu, %lu]"
-#define ALT_TENSORSHAPE_FORMAT_STR "%s [%d] [%lu, %lu]" // This can parse a vector (implicit 1xN size matrix)
+#define ALT_TENSORSHAPE_FORMAT_STR "%s [%u] [%lu, %lu]" // This can parse a vector (implicit 1xN size matrix)
 #define MAX_LINE_LEN 100
 
 typedef enum {
